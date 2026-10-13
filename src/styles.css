@@ -376,6 +376,30 @@ h1 { font-weight: 800; font-size: 29px; color: var(--engrave-copper); text-shado
 @media (max-height: 650px) { .welcome-art { top: 0; height: 80%; object-fit: contain; }.welcome-title { font-size: 27px; margin-block: 8px; }.welcome-description { font-size: 12px; }.welcome-header { padding-top: 12px; }.welcome-footer { padding-top: 8px; padding-bottom: 12px; }.welcome-navigation { margin-bottom: 5px; }.welcome-edition { margin-top: 8px; } }
 
 .language-selection { position: relative; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 14px; max-width: 904px; margin: 24px auto 4px; color: var(--dial-label); font-size: 13px; }
+.settings-dashboard { margin: 0 0 22px; }
+.dashboard-toggle { width: 100%; min-height: 42px; justify-content: flex-start; gap: 10px; color: var(--dial-label); font-family: var(--font-mono); font-size: 11px; border-block: 1px solid var(--bevel); border-radius: 0; background: var(--brush-grain), var(--shadow); text-shadow: none; }
+.dashboard-toggle:hover { background: var(--steel); color: var(--engrave-light); }
+.dashboard-chevron { margin-left: auto; transition: transform 160ms; }.dashboard-chevron.open { transform: rotate(180deg); }
+.dashboard-sections { margin-top: 14px; }
+.dashboard-section { border-bottom: 1px solid var(--bevel); background: var(--tray-gradient); }
+.dashboard-section:first-child { border-radius: 5px 5px 0 0; }.dashboard-section:last-child { border-radius: 0 0 5px 5px; }
+.dashboard-section-trigger { padding: 17px 20px; color: var(--engrave-ink); font-family: var(--font-display); font-size: 14px; font-weight: 700; text-shadow: var(--incised-shadow); }
+.dashboard-section-trigger:hover, .dashboard-faq-trigger:hover { text-decoration: none; color: var(--engrave-copper); }
+.dashboard-section-trigger > span { display: flex; gap: 12px; align-items: center; }
+.dashboard-section-content { padding: 0 20px 20px; color: var(--engrave-ink); overflow-wrap: anywhere; }
+.dashboard-section-content p, .dashboard-section-content li { font-size: 13px; line-height: 1.8; margin-block: 8px; }
+.dashboard-section-content h3 { font-family: var(--font-display); font-size: 16px; margin: 4px 0 8px; color: var(--engrave-copper); }
+.dashboard-appearance { display: flex; gap: 18px; flex-wrap: wrap; justify-content: space-between; align-items: center; }
+.dashboard-appearance strong { font-size: 14px; }.dashboard-appearance small { display: block; margin-top: 7px; color: var(--muted-foreground); font-size: 10px; }
+.dashboard-facts { margin: 15px 0; }.dashboard-facts > div { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; padding: 10px 0; border-bottom: 1px solid var(--plate-shade); font-size: 12px; }.dashboard-facts dd { margin: 0; font-family: var(--font-mono); }
+.dashboard-link { padding: 0; height: auto; color: var(--engrave-copper); white-space: normal; justify-content: flex-start; text-align: left; }
+.dashboard-contact, .dashboard-welcome { margin-block: 10px; height: auto; min-height: 42px; white-space: normal; }
+.dashboard-caution { color: var(--muted-foreground); }
+.dashboard-guides article + article { margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--plate-shade); }.dashboard-guides ol { padding-left: 20px; }
+.dashboard-faq-trigger { gap: 16px; line-height: 1.7; font-size: 13px; }
+.dashboard-faqs [data-slot] { color: var(--engrave-ink); }
+.language-my .dashboard-section-content p, .language-my .dashboard-section-content li, .language-my .dashboard-section-trigger, .language-my .dashboard-faq-trigger { line-height: 1.95; }
+@media (max-width: 700px) { .dashboard-section-trigger { padding: 15px 14px; font-size: 13px; }.dashboard-section-content { padding-inline: 14px; }.dashboard-section-content p, .dashboard-section-content li { font-size: 12px; } }
 .language-pill { display: flex; padding: 4px; gap: 4px; border: 1px solid var(--bevel); border-radius: 999px; background: var(--chassis-gradient); box-shadow: inset 0 1px 4px var(--deep-ink); }
 .language-option { min-width: 106px; height: 40px; border-radius: 999px; color: var(--dial-label); gap: 8px; font-size: 13px; }
 .language-option:hover { background: var(--steel); }

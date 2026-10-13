@@ -20,3 +20,4 @@
 - Derive platform icons from the same Netcon emblem, keeping adaptive foregrounds mask-safe and store icons opaque; shared artwork prevents inconsistent brand marks across installations.
 - Keep welcome artwork and copy in a shared browser-safe slide module; open the skippable first-visit dialog after hydration and allow replay from Info without resetting client state.
 - Keep translations in a browser-safe dictionary and a shared language context; persist the choice after hydration and translate presentation labels without changing protocol values, server credentials, or brand names.
+- Keep the shared collapsible settings dashboard separate from network configuration and diagnostics; app help and appearance must not change tunnel or server state.
