@@ -318,7 +318,7 @@ h1 { font-weight: 800; font-size: 29px; color: var(--engrave-copper); text-shado
 .welcome-screen { width: min(100vw, 480px); height: min(100dvh, 860px); max-width: 480px; padding: 0; gap: 0; overflow: hidden; border: 1px solid var(--bevel); border-radius: 7px; background: var(--deep-ink); display: flex; flex-direction: column; }
 .welcome-screen > button:last-child { display: none; }
 .welcome-art, .welcome-shade { position: absolute; inset: 0; width: 100%; height: 100%; }
-.welcome-art { object-fit: cover; }
+.welcome-art { object-fit: cover; top: -10%; }
 .welcome-shade { background: var(--welcome-shade); pointer-events: none; }
 .welcome-header { position: relative; display: flex; align-items: center; justify-content: space-between; padding: 24px 28px 0; gap: 20px; }
 .welcome-header img { width: 165px; height: auto; }
