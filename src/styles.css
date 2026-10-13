@@ -140,6 +140,45 @@ h1 { font-weight: 800; font-size: 29px; color: var(--engrave-copper); text-shado
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; animation-iteration-count: 1 !important; } }
 
 .server-flag svg { width: 30px; height: 20px; border-radius: 2px; }
+/* Panel-mounted switches: recess, hinge, and independently lit state. */
+.nav-key, .keycap, .copper-button, .import-options button { border-radius: 3px; border-width: 2px; border-color: var(--shadow); border-bottom-color: var(--bevel); box-shadow: inset 0 2px 0 var(--plate-light), inset 0 -3px 0 var(--bevel), 0 0 0 2px var(--plate-shade), 0 3px 3px var(--shadow); transition: transform 120ms, box-shadow 120ms; }
+.nav-key { background: var(--key-gradient); }
+.nav-active { background: var(--brush-grain), linear-gradient(180deg, var(--plate-shade), var(--plate-mid) 50%, var(--plate-light)); box-shadow: inset 0 3px 5px var(--bevel), inset 0 -2px 0 var(--plate-light), 0 0 0 2px var(--plate-shade); }
+.tab-indicator { bottom: 5px; height: 3px; width: 19px; border: 1px solid var(--copper-bevel); }
+.keycap:active, .copper-button:active, .import-options button:active { transform: translateY(2px); box-shadow: inset 0 2px 5px var(--bevel), 0 0 0 2px var(--plate-shade); }
+.quick-actions { gap: 9px; }
+.quick-chip { height: 32px; }
+.chip-active { background: var(--brush-grain), linear-gradient(180deg, var(--plate-shade), var(--plate-mid)); box-shadow: inset 0 2px 4px var(--bevel), inset 0 -2px 0 var(--primary), 0 0 0 2px var(--plate-shade); }
+.copper-button { box-shadow: inset 0 2px 0 var(--copper-highlight), inset 0 -3px 0 var(--copper-bevel), 0 0 0 2px var(--plate-shade), 0 3px 3px var(--shadow); }
+.power-housing { width: 150px; height: 169px; border-radius: 7px; padding: 11px; background: var(--tray-gradient); box-shadow: inset 0 1px 0 var(--plate-light), 0 2px 5px var(--shadow), 0 0 0 4px var(--bevel); }
+.power-button { position: relative; border-radius: 4px; background: var(--brush-grain), linear-gradient(180deg, var(--plate-light), var(--plate-mid) 47%, var(--plate-shade) 51%, var(--bevel)); box-shadow: inset 0 3px 0 var(--plate-light), inset 0 -6px 4px var(--shadow), 0 3px 3px var(--shadow); gap: 17px; }
+.power-button::before, .power-button::after { position: absolute; left: 50%; transform: translateX(-50%); color: var(--engrave-ink); font: 11px var(--font-mono); text-shadow: var(--incised-shadow); }
+.power-button::before { content: 'I'; top: 8px; }
+.power-button::after { content: 'O'; bottom: 8px; }
+.connected .power-button, .connecting .power-button { background: var(--brush-grain), linear-gradient(180deg, var(--bevel), var(--plate-shade) 47%, var(--plate-mid) 51%, var(--plate-light)); box-shadow: inset 0 5px 6px var(--shadow), inset 0 -2px 0 var(--plate-light); }
+.connected.power-housing { box-shadow: inset 0 1px 0 var(--plate-light), 0 0 0 4px var(--bevel), 0 0 18px color-mix(in oklch, var(--primary) 30%, transparent); }
+.analog-toggle-unit { display: flex; align-items: center; gap: 10px; }
+.switch-position, .switch-readout, .protocol-switch-unit > span { font-family: var(--font-mono); font-size: 9px; text-shadow: var(--incised-shadow); }
+.analog-toggle { position: relative; width: 42px; height: 54px; border-radius: 5px; border: 3px solid var(--bevel); background: var(--shadow); box-shadow: 0 1px 0 var(--plate-light), inset 0 1px 4px var(--deep-ink); padding: 3px; }
+.analog-toggle[data-state] { background: var(--shadow); }
+.analog-toggle > span { width: 100%; height: 100%; border-radius: 2px; transform: none; background: var(--brush-grain), linear-gradient(180deg, var(--plate-light), var(--plate-mid) 45%, var(--plate-shade) 50%, var(--bevel)); box-shadow: inset 0 2px 0 var(--plate-light), inset 0 -3px 2px var(--shadow); transition: background 150ms, box-shadow 150ms; }
+.analog-toggle > span[data-state=checked] { transform: none; background: var(--brush-grain), linear-gradient(180deg, var(--bevel), var(--plate-shade) 45%, var(--plate-mid) 50%, var(--plate-light)); box-shadow: inset 0 3px 3px var(--shadow), inset 0 -1px 0 var(--plate-light); }
+.analog-toggle::after { content: ''; position: absolute; width: 12px; height: 3px; left: 50%; top: 10px; transform: translateX(-50%); background: var(--bevel); border: 1px solid var(--shadow); pointer-events: none; }
+.analog-toggle[data-state=checked]::after { background: var(--online); box-shadow: 0 0 5px var(--online); }
+.protocol-switch-bank { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; padding: 12px 18px; background: var(--tray-gradient); border-block: 1px solid var(--bevel); box-shadow: inset 0 1px 2px var(--bevel), 0 1px 0 var(--plate-light); }
+.protocol-switch-unit { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.switch-readout { color: var(--muted-foreground); }
+.switch-readout.is-on { color: var(--engrave-copper); }
+@media (max-width: 700px) {
+  .power-housing { width: 92px; height: 120px; padding: 8px; }
+  .power-button { gap: 9px; }
+  .power-button::before, .power-button::after { font-size: 8px; }
+  .power-button::before { top: 5px; }
+  .power-button::after { bottom: 4px; }
+  .power-button .power-bolt { width: 29px; height: 29px; }
+  .protocol-switch-bank { width: 100%; gap: 10px; }
+  .quick-actions { gap: 9px; }
+}
 @media (max-width: 700px) {
   .client-header h1 { font-size: 20px; white-space: nowrap; }
   .client-chassis { border-radius: 8px; }
