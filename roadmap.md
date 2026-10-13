@@ -7,3 +7,5 @@
 - [x] Apply reference-inspired brushed plates and incised typography across all client views; verify readability and controls
 - [x] Add panel-mounted analog controls and verify switch states and connection flow
 - [x] Match supplied actual metal-panel designs with a straight copper title; verify all tabs and connection controls
+- [ ] Real Android tunnel, DNS/routing, Kill Switch and byte counters — blocked on an external native Android VPN service and device testing
+- [ ] Public server directory with browsing, ratings and measured latency/location sorting — define source and native latency measurement boundary
