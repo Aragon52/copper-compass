@@ -40,7 +40,7 @@
   --plate-light: oklch(0.94 0.003 255); --plate-mid: oklch(0.76 0.007 255); --plate-shade: oklch(0.60 0.01 255);
   --engrave-ink: oklch(0.235 0.008 255); --engrave-light: oklch(0.94 0.003 255); --engrave-copper: oklch(0.43 0.09 48);
   --dial-label: oklch(0.76 0.012 255);
-  --brush-grain: repeating-linear-gradient(0deg, color-mix(in oklch, var(--plate-light) 16%, transparent) 0px, transparent 1px, color-mix(in oklch, var(--shadow) 10%, transparent) 2px, transparent 3px);
+  --brush-grain: repeating-linear-gradient(0deg, color-mix(in oklch, var(--plate-light) 10%, transparent) 0px, transparent 1px, color-mix(in oklch, var(--shadow) 5%, transparent) 2px, transparent 3px);
   --metal-gradient: var(--brush-grain), linear-gradient(100deg, var(--plate-shade), var(--plate-light) 19%, var(--plate-mid) 35%, var(--plate-light) 53%, var(--plate-mid) 73%, var(--plate-shade));
   --tray-gradient: var(--brush-grain), linear-gradient(100deg, var(--plate-shade), var(--plate-mid) 23%, var(--plate-light) 50%, var(--plate-mid) 76%, var(--plate-shade));
   --key-gradient: var(--brush-grain), linear-gradient(180deg, var(--plate-light), var(--plate-mid) 12%, var(--plate-shade) 94%, var(--bevel));
@@ -140,3 +140,11 @@ h1 { font-weight: 800; font-size: 29px; color: var(--engrave-copper); text-shado
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; animation-iteration-count: 1 !important; } }
 
 .server-flag svg { width: 30px; height: 20px; border-radius: 2px; }
+@media (max-width: 700px) {
+  .client-header h1 { font-size: 20px; white-space: nowrap; }
+  .client-chassis { border-radius: 8px; }
+}
+@media (max-width: 380px) {
+  .client-header h1 { font-size: 18px; }
+  .client-header { gap: 8px; }
+}
