@@ -91,3 +91,5 @@ h1 { font-family: var(--font-display); font-size: 31px; line-height: 1; font-wei
 }
 @media (max-width: 380px) { .client-stage { padding: 14px 7px; }.client-chassis { padding-left: 13px; padding-right: 13px; }h1 { font-size: 23px; }.logo-key { width: 33px; height: 36px; }.power-housing { width: 98px; height: 98px; }.ai-heading .micro-label { display: none; }.instrument-label { font-size: 6px; }.chassis-footer { margin: 0 -9px; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; animation-iteration-count: 1 !important; } }
+
+.server-flag svg { width: 30px; height: 20px; border-radius: 2px; }
