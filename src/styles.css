@@ -199,3 +199,93 @@ h1 { font-weight: 800; font-size: 29px; color: var(--engrave-copper); text-shado
   .client-header h1 { font-size: 18px; }
   .client-header { gap: 8px; }
 }
+
+/* Actual reference panels: front-facing copper lettering on dark steel. */
+:root {
+  --chassis-gradient: var(--brush-grain), linear-gradient(100deg, var(--shadow), var(--steel) 25%, var(--bevel) 49%, var(--steel) 72%, var(--shadow));
+  --title-relief: 0 -1px 0 var(--copper-highlight), 0 1px 0 var(--primary), 0 2px 0 var(--copper-bevel), 0 3px 0 var(--copper-bevel), 0 4px 0 var(--copper-bevel), 0 5px 0 var(--copper-bevel), 0 7px 3px var(--deep-ink), 0 0 22px color-mix(in oklch, var(--copper-glow) 24%, transparent);
+  --panel-relief: inset 0 1px 0 var(--plate-light), inset 0 -2px 1px var(--bevel), 0 0 0 2px var(--shadow), 0 3px 0 var(--bevel), 0 6px 8px var(--deep-ink);
+}
+.client-stage { padding-top: 26px; }
+.outer-brand, .below-chassis { display: none; }
+.client-chassis { background: var(--chassis-gradient); padding: 36px 24px 0; border-color: var(--plate-shade); box-shadow: inset 0 1px 0 var(--plate-light), inset 0 0 0 4px var(--shadow), 0 20px 60px var(--deep-ink); }
+.chassis-texture { opacity: .2; mix-blend-mode: luminosity; }
+.client-header { flex-direction: column; gap: 28px; padding: 18px 0 26px; }
+.client-identity { justify-content: center; width: 100%; }
+.client-header h1 { font-family: var(--font-display); font-size: 64px; font-weight: 800; line-height: 1.15; color: var(--primary); text-shadow: var(--title-relief); transform: none; font-style: normal; white-space: nowrap; }
+.status-badge { background: var(--tray-gradient); border: 2px solid var(--shadow); border-radius: 28px; min-width: 180px; justify-content: center; color: var(--engrave-ink); font-family: var(--font-display); font-size: 18px; font-weight: 700; text-shadow: var(--incised-shadow); box-shadow: inset 0 2px 3px var(--shadow), 0 1px 0 var(--plate-light); }
+.status-badge.connected, .status-badge.connecting { color: var(--engrave-ink); }
+.instrument-nav { gap: 2px; padding: 3px; background: var(--shadow); margin-bottom: 20px; }
+.nav-key { height: 64px; font-family: var(--font-sans); font-size: 20px; font-weight: 600; border: 1px solid var(--bevel); border-radius: 4px; box-shadow: inset 0 1px 0 var(--plate-light), inset 0 -2px 1px var(--bevel), 0 3px 3px var(--deep-ink); }
+.nav-key svg { display: none; }
+.nav-active { color: var(--engrave-ink); background: var(--metal-gradient); box-shadow: inset 0 2px 0 var(--plate-light), 0 3px 6px var(--deep-ink); }
+.tab-indicator { width: 12px; height: 12px; bottom: 5px; right: 9px; border-radius: 50%; background: radial-gradient(circle at 35% 25%, var(--copper-highlight), var(--primary) 55%, var(--copper-bevel)); box-shadow: 0 0 8px var(--copper-glow); }
+.steel-tray { background: var(--tray-gradient); border: 1px solid var(--plate-mid); border-radius: 7px; box-shadow: var(--panel-relief); }
+.ai-tray, .active-server, .diagnostic-row, .control-deck { position: relative; }
+.ai-tray::before, .ai-tray::after, .active-server::before, .active-server::after, .diagnostic-row::before, .diagnostic-row::after { content: ''; position: absolute; width: 10px; height: 10px; top: 10px; border-radius: 50%; background: linear-gradient(135deg, var(--plate-light), var(--bevel) 46%, var(--deep-ink) 48%, var(--deep-ink) 54%, var(--plate-mid) 56%, var(--plate-light)); border: 1px solid var(--shadow); box-shadow: 0 1px 1px var(--shadow); }
+.ai-tray::before, .active-server::before, .diagnostic-row::before { left: 8px; }
+.ai-tray::after, .active-server::after, .diagnostic-row::after { right: 8px; }
+.ai-tray { padding: 23px 22px 18px; }
+.ai-heading .micro-label { display: none; }
+.ai-badge { font-size: 19px; color: var(--engrave-ink); }
+.field-label { font-family: var(--font-sans); font-size: 14px; font-weight: 600; }
+.purpose-input { height: 49px; font-size: 14px; }
+.quick-actions { gap: 12px; margin-block: 16px 19px; }
+.quick-chip { height: 40px; font-family: var(--font-sans); font-size: 13px; padding-inline: 12px; }
+.copper-button { background: var(--key-gradient); color: var(--engrave-ink); text-shadow: var(--incised-shadow); box-shadow: var(--panel-relief); border-color: var(--bevel); }
+.recommend-button { height: 44px; }
+.active-server { padding-inline: 25px; }
+.section-heading, .deck-heading .micro-label, .instrument-label, .connection-footer, .chassis-footer { color: var(--dial-label); text-shadow: 0 1px 1px var(--deep-ink); }
+.control-deck { background: var(--chassis-gradient); border: 1px solid var(--bevel); border-radius: 7px; padding: 16px 14px 0; box-shadow: inset 0 1px 0 var(--plate-light), 0 4px 7px var(--deep-ink); }
+.gauge-face { fill: var(--plate-mid); stroke: var(--plate-light); stroke-width: 2; }
+.gauge-rim { fill: var(--bevel); stroke: var(--plate-light); stroke-width: 2; }
+.gauge-scale, .gauge-unit, .gauge-brand, .gauge-value { fill: var(--engrave-ink); filter: none; text-shadow: var(--incised-shadow); }
+.tick-major, .tick-minor { stroke: var(--engrave-ink); }
+.gauge-track { stroke: var(--plate-shade); }
+.power-housing { width: 150px; height: 150px; border-radius: 50%; padding: 10px; background: var(--metal-gradient); border: 2px solid var(--copper-highlight); box-shadow: 0 0 0 3px var(--copper-bevel), 0 3px 10px var(--deep-ink), inset 0 1px 0 var(--plate-light); }
+.power-button, .connected .power-button, .connecting .power-button { border-radius: 50%; background: var(--metal-gradient); box-shadow: inset 0 2px 2px var(--plate-light), inset 0 -4px 5px var(--bevel), 0 3px 4px var(--shadow); gap: 0; }
+.power-button::before, .power-button::after, .power-button-dot { display: none; }
+.power-button .power-bolt { color: var(--engrave-ink); fill: none; width: 55px; height: 55px; filter: drop-shadow(0 1px 0 var(--plate-light)); }
+.connection-state-line { color: var(--dial-label); }
+.connection-state-line .simulation-tag { color: var(--dial-label); }
+.telemetry-strip { margin-top: 17px; border-radius: 5px; }
+.diagnostics { padding: 0; background: none; border: 0; box-shadow: none; display: flex; flex-direction: column; gap: 16px; }
+.diagnostic-row, .diagnostic-row:last-child { background: var(--tray-gradient); border: 1px solid var(--plate-mid); border-radius: 7px; box-shadow: var(--panel-relief); padding: 22px 28px; align-items: center; min-height: 76px; }
+.diagnostic-row > span { color: var(--engrave-ink); font-size: 18px; font-weight: 600; }
+.diagnostic-row strong { font-family: var(--font-sans); font-size: 15px; font-weight: 600; overflow-wrap: anywhere; }
+.chassis-footer { margin: 0 -20px; padding-inline: 20px; }
+.section-heading .micro-label, .manage-link { color: var(--dial-label); text-shadow: 0 1px 1px var(--deep-ink); }
+.analog-toggle { width: 48px; height: 58px; border: 0; background: transparent; box-shadow: none; }
+.analog-toggle[data-state] { background: transparent; }
+.analog-toggle::before { inset: 10px 2px 2px; border-radius: 50%; border: 5px solid var(--plate-mid); background: radial-gradient(circle, var(--deep-ink) 48%, var(--bevel) 52%, var(--shadow) 66%); box-shadow: 0 0 0 1px var(--shadow), 0 0 0 3px var(--plate-shade), 0 3px 4px var(--deep-ink), inset 0 1px 2px var(--plate-light); }
+.analog-toggle::after { top: 0; }
+.analog-toggle > span { left: 16px; right: auto; bottom: 0; width: 16px; height: 30px; border-radius: 8px; background: linear-gradient(90deg, var(--bevel), var(--plate-light) 38%, var(--plate-mid) 70%, var(--bevel)); box-shadow: inset 0 2px 0 var(--plate-light), inset 0 -3px 2px var(--bevel), 0 4px 4px var(--deep-ink); }
+.analog-toggle > span[data-state=checked] { bottom: 19px; height: 34px; border-radius: 8px; box-shadow: inset 0 2px 0 var(--plate-light), inset 0 -3px 2px var(--bevel), 0 4px 4px var(--deep-ink); }
+.analog-toggle > span::after { inset: 3px 2px auto; height: 8px; border-radius: 50%; background: var(--metal-gradient); opacity: 1; }
+@media (max-width: 700px) {
+  .client-stage { padding: 10px 7px; }
+  .client-chassis { padding: 24px 12px 0; }
+  .client-header { padding: 12px 0 21px; gap: 20px; }
+  .client-header h1 { font-size: 36px; }
+  .status-badge { font-size: 14px; padding: 7px 16px; min-width: 140px; }
+  .nav-key { font-size: 15px; height: 51px; gap: 0; }
+  .tab-indicator { width: 7px; height: 7px; right: 6px; bottom: 4px; }
+  .ai-tray { padding: 22px 14px 14px; }
+  .ai-badge { font-size: 16px; }
+  .field-label { font-size: 12px; }
+  .purpose-input { font-size: 12px; }
+  .quick-chip { font-size: 11px; height: 36px; }
+  .active-server { padding: 17px 18px; height: 86px; }
+  .control-deck { padding: 13px 8px 0; }
+  .instrument-grid { margin-inline: -4px; grid-template-columns: 1fr .9fr 1fr; }
+  .power-housing { width: 92px; height: 92px; padding: 7px; }
+  .power-button .power-bolt { width: 38px; height: 38px; }
+  .diagnostic-row, .diagnostic-row:last-child { padding: 19px 23px; gap: 10px; min-height: 76px; }
+  .diagnostic-row > span { font-size: 15px; }
+  .diagnostic-row strong { font-size: 12px; max-width: 55%; }
+  .telemetry-strip { grid-template-columns: repeat(2, 1fr); gap: 15px 0; }
+  .telemetry-strip > div:nth-child(2) { border-right: 0; }
+  .telemetry-strip > div > span { font-size: 8px; }
+  .chassis-footer { margin-inline: -8px; padding-inline: 12px; }
+}
+@media (max-width: 380px) { .client-header h1 { font-size: 30px; } .nav-key { font-size: 13px; } }
