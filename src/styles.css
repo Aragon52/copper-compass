@@ -265,7 +265,7 @@ h1 { font-weight: 800; font-size: 29px; color: var(--engrave-copper); text-shado
 .control-deck .instrument-label { font-size: 10px; font-weight: 500; margin-top: 0; }
 .control-deck .power-state { color: var(--engrave-copper); }
 .control-deck .connection-state-line { color: var(--engrave-ink); text-shadow: var(--incised-shadow); border-top: 1px solid var(--plate-shade); box-shadow: inset 0 1px 0 var(--plate-light); margin-top: 20px; padding: 14px 0; flex-wrap: wrap; }
-.control-deck .simulation-tag { color: var(--engrave-copper); border-color: var(--bevel); background: var(--brush-grain), var(--input); text-shadow: none; }
+.control-deck .connection-state-line .simulation-tag { color: var(--engrave-copper); border-color: var(--bevel); background: var(--brush-grain), var(--input); text-shadow: none; }
 .gauge-face { fill: var(--plate-mid); stroke: var(--plate-light); stroke-width: 2; }
 .gauge-rim { fill: var(--plate-shade); stroke: var(--plate-light); stroke-width: 2; filter: drop-shadow(0 2px 2px var(--bevel)); }
 .gauge-scale, .gauge-unit, .gauge-brand, .gauge-value { fill: var(--engrave-ink); filter: none; text-shadow: var(--incised-shadow); }
