@@ -1,5 +1,5 @@
 export type Protocol = 'vless' | 'vmess' | 'trojan' | 'shadowsocks';
-export type ServerNode = { id: string; name: string; protocol: Protocol; address: string; port: number; credential: string; ping: number; country: string; flag: string; network: string; security: string; params: Record<string, string>; demo?: boolean };
+export type ServerNode = { id: string; name: string; protocol: Protocol; address: string; port: number; credential: string; ping: number; country: string; flag: string; network: string; security: string; params: Record<string, string>; demo?: boolean; source?: string };
 export type ClientSettings = { killSwitch: boolean; dns: string; customDns: string; routing: string; protocols: Protocol[] };
 export const defaultSettings: ClientSettings = { killSwitch: true, dns: '1.1.1.1', customDns: '', routing: 'Bypass LAN', protocols: ['vless', 'vmess', 'trojan', 'shadowsocks'] };
 export const presetNodes: [ServerNode, ...ServerNode[]] = [

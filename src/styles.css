@@ -289,3 +289,24 @@ h1 { font-weight: 800; font-size: 29px; color: var(--engrave-copper); text-shado
   .chassis-footer { margin-inline: -8px; padding-inline: 12px; }
 }
 @media (max-width: 380px) { .client-header h1 { font-size: 30px; } .nav-key { font-size: 13px; } }
+.public-directory { display: grid; gap: 12px; }
+.directory-attribution, .directory-node, .directory-rating { display: flex; align-items: center; gap: 10px; }
+.directory-attribution { justify-content: space-between; color: var(--engrave-copper); }
+.directory-warning { display: flex; align-items: flex-start; gap: 8px; margin: 0; font-size: 12px; color: var(--engrave-ink); }
+.directory-warning svg { flex-shrink: 0; }
+.directory-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.directory-controls select { margin-top: 5px; }
+.directory-meta { margin: 0; font-size: 12px; color: var(--muted-foreground); }
+.directory-list { display: grid; gap: 10px; }
+.directory-row { padding: 12px; border: 1px solid var(--bevel); border-radius: 5px; background: var(--tray-gradient); box-shadow: var(--key-shadow); }
+.directory-node > div { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.directory-node strong, .directory-node small { display: block; }
+.directory-node strong { font-size: 14px; }
+.directory-node small { font-size: 10px; margin-top: 4px; }
+.directory-rating { margin-top: 8px; gap: 2px; }
+.directory-rating > span { font-size: 11px; margin-right: auto; }
+.directory-rating button { width: 30px; height: 30px; }
+.directory-rating .rating-on { color: var(--engrave-copper); }
+.rating-on svg { fill: var(--primary); }
+.active-server-name strong, .active-server-name small { overflow-wrap: anywhere; }
+@media (max-width: 450px) { .directory-controls { grid-template-columns: 1fr; } }
