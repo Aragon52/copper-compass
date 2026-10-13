@@ -13,3 +13,4 @@
 - Parse configuration links and QR images locally in pure TypeScript; keep credentials out of AI recommendation payloads.
 - Keep optional Gemini keys session-only and send them only to the same-origin server function for provider requests.
 - Model client sections as in-place instrument tabs, with protocol parsing and export isolated from presentation components.
+- Express machined surfaces and incised typography through shared semantic CSS material tokens and client selectors so all tabs and dialogs stay visually consistent without changing connection logic.

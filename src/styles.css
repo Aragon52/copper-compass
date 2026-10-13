@@ -4,7 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 @theme inline {
   --font-sans: 'Barlow', sans-serif;
-  --font-display: 'Barlow Condensed', sans-serif;
+  --font-display: 'Archivo', sans-serif;
   --font-mono: 'IBM Plex Mono', monospace;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -29,20 +29,25 @@
   --radius-sm: 4px; --radius-md: 6px; --radius-lg: 8px; --radius-xl: 8px;
 }
 :root {
-  --background: oklch(0.135 0.008 270); --foreground: oklch(0.86 0.01 75);
-  --steel: oklch(0.308 0.011 255); --card: oklch(0.365 0.014 255); --bevel: oklch(0.492 0.02 255);
+  --background: oklch(0.135 0.008 270); --foreground: oklch(0.235 0.008 255);
+  --steel: oklch(0.308 0.011 255); --card: oklch(0.735 0.007 255); --bevel: oklch(0.492 0.02 255);
   --shadow: oklch(0.172 0.009 255); --deep-ink: oklch(0.13 0.008 270);
   --primary: oklch(0.643 0.117 48); --primary-foreground: oklch(0.18 0.02 48);
   --copper-highlight: oklch(0.848 0.07 78); --copper-bevel: oklch(0.454 0.084 63); --copper-glow: oklch(0.795 0.102 71);
-  --secondary: oklch(0.31 0.014 255); --muted: oklch(0.245 0.012 255); --muted-foreground: oklch(0.689 0.013 255);
-  --accent: oklch(0.40 0.014 255); --border: oklch(0.44 0.015 255); --input: oklch(0.245 0.01 255);
+  --secondary: oklch(0.70 0.007 255); --muted: oklch(0.66 0.007 255); --muted-foreground: oklch(0.365 0.01 255);
+  --accent: oklch(0.81 0.006 255); --border: oklch(0.54 0.012 255); --input: oklch(0.80 0.006 255);
   --destructive: oklch(0.609 0.209 28); --online: oklch(0.673 0.162 145); --offline-border: oklch(0.699 0.088 88);
-  --metal-gradient: linear-gradient(180deg, var(--bevel), var(--steel) 6%, var(--steel) 95%, var(--shadow));
-  --tray-gradient: linear-gradient(180deg, color-mix(in oklch, var(--card) 87%, var(--shadow)), var(--card));
-  --key-gradient: linear-gradient(180deg, color-mix(in oklch, var(--bevel) 45%, var(--steel)), var(--steel));
+  --plate-light: oklch(0.94 0.003 255); --plate-mid: oklch(0.76 0.007 255); --plate-shade: oklch(0.60 0.01 255);
+  --engrave-ink: oklch(0.235 0.008 255); --engrave-light: oklch(0.94 0.003 255); --engrave-copper: oklch(0.43 0.09 48);
+  --dial-label: oklch(0.76 0.012 255);
+  --brush-grain: repeating-linear-gradient(0deg, color-mix(in oklch, var(--plate-light) 10%, transparent) 0px, transparent 1px, color-mix(in oklch, var(--shadow) 5%, transparent) 2px, transparent 3px);
+  --metal-gradient: var(--brush-grain), linear-gradient(100deg, var(--plate-shade), var(--plate-light) 19%, var(--plate-mid) 35%, var(--plate-light) 53%, var(--plate-mid) 73%, var(--plate-shade));
+  --tray-gradient: var(--brush-grain), linear-gradient(100deg, var(--plate-shade), var(--plate-mid) 23%, var(--plate-light) 50%, var(--plate-mid) 76%, var(--plate-shade));
+  --key-gradient: var(--brush-grain), linear-gradient(180deg, var(--plate-light), var(--plate-mid) 12%, var(--plate-shade) 94%, var(--bevel));
   --copper-gradient: linear-gradient(180deg, var(--copper-highlight), var(--primary) 10%, var(--primary) 85%, var(--copper-bevel));
-  --tray-shadow: inset 0 3px 8px var(--shadow), inset 1px 0 1px var(--shadow), inset -1px 0 1px var(--shadow), 0 1px 0 var(--bevel);
-  --key-shadow: inset 0 1px 0 var(--bevel), 0 2px 2px var(--shadow);
+  --tray-shadow: inset 0 2px 4px color-mix(in oklch, var(--shadow) 65%, transparent), inset 1px 0 2px var(--bevel), inset -1px 0 2px var(--bevel), 0 1px 0 var(--plate-light);
+  --key-shadow: inset 0 1px 0 var(--plate-light), inset 0 -1px 0 var(--bevel), 0 2px 2px color-mix(in oklch, var(--shadow) 65%, transparent);
+  --incised-shadow: 0 1px 0 var(--engrave-light), 0 -1px 0 color-mix(in oklch, var(--shadow) 35%, transparent);
 }
 * { border-color: var(--border); box-sizing: border-box; }
 body { margin: 0; background: var(--background); color: var(--foreground); font-family: var(--font-sans); letter-spacing: 0; }
@@ -84,6 +89,48 @@ h1 { font-family: var(--font-display); font-size: 31px; line-height: 1; font-wei
 .tab-content { min-height: 720px; }.tab-content > .section-heading:first-child { margin-top: 0; }.settings-tray { padding: 3px 21px 16px; }.setting-row { display: flex; align-items: center; justify-content: space-between; padding: 19px 0; gap: 15px; border-bottom: 1px solid var(--border); }.setting-row strong { display: flex; gap: 8px; align-items: center; font-size: 14px; font-weight: 500; }.setting-row small { display: block; color: var(--muted-foreground); font-size: 11px; margin-top: 5px; }.setting-select { width: 220px; }.protocol-settings { flex-wrap: wrap; }.protocol-buttons { display: flex; flex-wrap: wrap; gap: 5px; }.protocol-buttons button { padding: 0 8px; font-size: 9px; height: 30px; }.proxy-ports { display: flex; justify-content: space-between; align-items: center; padding-top: 20px; gap: 10px; font-family: var(--font-mono); font-size: 10px; color: var(--muted-foreground); }.proxy-ports > span:first-child { display: flex; gap: 6px; align-items: center; font-size: 8px; }.proxy-ports b { color: var(--copper-glow); font-weight: 400; margin-left: 8px; }.settings-note { margin: 17px 0 0; color: var(--muted-foreground); font-size: 10px; line-height: 1.6; }.appearance { padding: 20px; display: flex; justify-content: space-between; gap: 15px; align-items: center; }.appearance strong { font-size: 14px; font-weight: 500; }.appearance small { display: block; margin-top: 7px; color: var(--muted-foreground); font-size: 8px; font-family: var(--font-mono); }.swatches { display: flex; gap: 7px; }.swatch { width: 27px; height: 27px; border-radius: 4px; border: 1px solid var(--border); box-shadow: var(--key-shadow); }.swatch-steel { background: var(--steel); }.swatch-highlight { background: var(--bevel); }.swatch-copper { background: var(--primary); }.swatch-glow { background: var(--copper-highlight); }.export-section { display: flex; gap: 12px; margin: 22px 0; }.export-section button { font-family: var(--font-mono); font-size: 10px; height: 40px; }
 .diagnostics { padding: 4px 21px; }.diagnostic-row { display: flex; justify-content: space-between; gap: 16px; padding: 15px 0; border-bottom: 1px solid var(--border); font-size: 12px; }.diagnostic-row:last-child { border: 0; }.diagnostic-row > span { color: var(--muted-foreground); }.diagnostic-row strong { font-family: var(--font-mono); font-size: 10px; font-weight: 400; text-align: right; }.privacy-panel { display: flex; gap: 18px; padding: 24px; }.privacy-icon { color: var(--primary); padding-top: 4px; }.privacy-panel h3, .native-guide h3 { font-size: 17px; font-weight: 500; margin: 0 0 10px; color: var(--copper-glow); }.privacy-panel p, .native-guide p { margin: 0; font-size: 12px; color: var(--muted-foreground); line-height: 1.7; }.privacy-checks { display: flex; flex-wrap: wrap; gap: 15px; margin: 15px 0; }.privacy-checks span { display: flex; gap: 5px; align-items: center; font-size: 10px; color: var(--foreground); }.privacy-checks svg { width: 12px; height: 12px; color: var(--online); }.privacy-panel small, .native-guide small { color: var(--muted-foreground); font-size: 10px; line-height: 1.6; display: block; }.native-guide { padding: 23px; margin-bottom: 25px; }.command-line { display: flex; align-items: center; gap: 10px; background: var(--shadow); border: 1px solid var(--border); border-radius: 4px; padding: 4px 12px; margin: 15px 0; color: var(--primary); }.command-line code { font-family: var(--font-mono); font-size: 12px; flex: 1; }
 .server-dialog { background: var(--metal-gradient); border: 1px solid var(--bevel); box-shadow: 0 20px 80px var(--deep-ink); border-radius: 8px; max-height: 90vh; overflow-y: auto; width: calc(100% - 24px); max-width: 560px; }.server-dialog h2 { font-family: var(--font-mono); font-size: 15px; }.server-list { display: flex; flex-direction: column; gap: 8px; }.server-list-row { display: flex; align-items: center; gap: 5px; }.node-choice { display: flex; flex: 1; min-width: 0; height: auto; padding: 15px 12px; justify-content: flex-start; gap: 12px; background: var(--shadow); border: 1px solid var(--border); white-space: normal; }.node-choice.selected { border-color: var(--copper-bevel); color: var(--copper-glow); }.node-flag { font-size: 24px; }.node-details { display: flex; flex-direction: column; gap: 5px; text-align: left; min-width: 0; flex: 1; overflow-wrap: anywhere; }.node-details strong { font-weight: 500; font-size: 13px; }.node-details small { font-family: var(--font-mono); font-size: 9px; color: var(--muted-foreground); }.latency-tag { font-family: var(--font-mono); font-size: 10px; color: var(--online); flex-shrink: 0; }.import-options { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }.import-options button { height: 42px; font-size: 12px; }.manual-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }.manual-fields .engraved-input { margin-top: 7px; }.qr-panel { display: flex; flex-direction: column; gap: 24px; padding: 24px 0; }.camera-preview { width: 100%; max-height: 280px; object-fit: cover; border-radius: 4px; }
+/* Machined plate finish shared by every instrument view. */
+.client-chassis { border-radius: 8px; border-color: var(--plate-shade); box-shadow: inset 0 0 0 2px var(--plate-light), inset 0 0 0 5px var(--bevel), 0 20px 60px var(--deep-ink), 0 3px 5px var(--deep-ink); }
+.chassis-texture { opacity: .07; mix-blend-mode: multiply; }
+.client-chassis .screw { width: 12px; height: 12px; box-shadow: inset 0 1px 1px var(--plate-light), inset 0 -1px 2px var(--shadow), 0 1px 0 var(--plate-light); }
+.screw::after { top: 5px; left: 2px; width: 7px; box-shadow: 0 1px 0 var(--plate-light); }
+.client-chassis, .server-dialog { text-shadow: var(--incised-shadow); }
+h1 { font-weight: 800; font-size: 29px; color: var(--engrave-copper); text-shadow: 0 1px 0 var(--plate-light), 0 -1px 1px var(--shadow); }
+.header-eyebrow, .section-heading, .field-label, .deck-heading, .instrument-label, .chassis-footer { color: var(--engrave-ink); }
+.outer-brand, .outer-brand .micro-label, .below-chassis { color: var(--dial-label); text-shadow: 0 1px 1px var(--deep-ink); }
+.logo-key { border-radius: 5px; color: var(--engrave-copper); }
+.logo-key svg { fill: var(--engrave-copper); filter: drop-shadow(0 1px 0 var(--plate-light)); }
+.instrument-nav { background: var(--tray-gradient); border-radius: 5px; box-shadow: var(--tray-shadow); }
+.nav-key { color: var(--engrave-ink); text-shadow: var(--incised-shadow); font-weight: 600; }
+.nav-key:hover { background: var(--key-gradient); }
+.nav-active { color: var(--engrave-copper); border-color: var(--bevel); }
+.steel-tray { border-radius: 5px; }
+.ai-badge, .privacy-panel h3, .native-guide h3, .manage-link, .proxy-ports b, .power-state { color: var(--engrave-copper); }
+.ai-badge, .privacy-panel h3, .native-guide h3, .active-server-name strong, .appearance strong, .server-dialog h2 { font-family: var(--font-display); font-weight: 700; }
+.keycap, .import-options button { background: var(--key-gradient); color: var(--engrave-ink); border-color: var(--bevel); text-shadow: var(--incised-shadow); }
+.keycap:hover { color: var(--engrave-copper); background: var(--key-gradient); filter: brightness(1.06); }
+.chip-active, .enabled { color: var(--engrave-copper); border-color: var(--copper-bevel); box-shadow: var(--key-shadow), inset 0 -2px 0 var(--primary); }
+.engraved-input, .api-field { background: var(--brush-grain), var(--input); box-shadow: inset 0 2px 4px color-mix(in oklch, var(--shadow) 40%, transparent), 0 1px 0 var(--plate-light); border-color: var(--bevel); }
+.engraved-input, .api-field input { text-shadow: none; }
+.copper-button { text-shadow: 0 1px 0 color-mix(in oklch, var(--copper-highlight) 65%, transparent); }
+.active-server:hover { background: var(--tray-gradient); filter: brightness(1.04); }
+.server-flag { background: var(--key-gradient); }
+.protocol-badge { background: var(--key-gradient); color: var(--engrave-copper); }
+.power-button { background: var(--key-gradient); border-color: var(--plate-light); box-shadow: inset 0 2px 3px var(--plate-light), inset 0 -3px 6px var(--bevel), 0 4px 6px var(--shadow); }
+.power-state.connected { color: var(--engrave-copper); }
+.gauge-scale, .gauge-unit { fill: var(--dial-label); }
+.gauge-brand { fill: var(--dial-label); opacity: .7; }
+.tick-major { stroke: var(--dial-label); }
+.gauge-rim { fill: var(--plate-mid); stroke: var(--bevel); }
+.gauge-value { filter: drop-shadow(0 1px 1px var(--deep-ink)); }
+.telemetry-strip { background: var(--tray-gradient); box-shadow: inset 0 1px 2px var(--bevel), 0 1px 0 var(--plate-light); }
+.telemetry-strip strong { color: var(--engrave-ink); }
+.simulation-tag { color: var(--engrave-ink); border-color: var(--bevel); }
+.status-badge, .command-line { text-shadow: 0 1px 1px var(--deep-ink); }
+.node-choice { background: var(--tray-gradient); box-shadow: var(--tray-shadow); }
+.node-choice.selected { color: var(--engrave-copper); }
+.latency-tag { color: var(--engrave-ink); }
+.recommendation { color: var(--engrave-copper); }
 @keyframes led-pulse { 50% { opacity: .25; } }
 @media (min-width: 1500px) { .client-stage { padding-top: 60px; } }
 @media (max-width: 700px) {
@@ -93,3 +140,11 @@ h1 { font-family: var(--font-display); font-size: 31px; line-height: 1; font-wei
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; animation-iteration-count: 1 !important; } }
 
 .server-flag svg { width: 30px; height: 20px; border-radius: 2px; }
+@media (max-width: 700px) {
+  .client-header h1 { font-size: 20px; white-space: nowrap; }
+  .client-chassis { border-radius: 8px; }
+}
+@media (max-width: 380px) {
+  .client-header h1 { font-size: 18px; }
+  .client-header { gap: 8px; }
+}
