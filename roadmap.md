@@ -8,4 +8,6 @@
 - [x] Add panel-mounted analog controls and verify switch states and connection flow
 - [x] Match supplied actual metal-panel designs with a straight copper title; verify all tabs and connection controls
 - [ ] Real Android tunnel, DNS/routing, Kill Switch and byte counters — blocked on an external native Android VPN service and device testing
-- [ ] Public server directory with browsing, ratings and measured latency/location sorting — define source and native latency measurement boundary
+- [x] Live attributed FastNodes directory, country feeds, personal ratings, sorting, imports and source-error states; verified live browser flow and tests
+- [x] Typed external Android adapter contract and protection/counter acceptance requirements
+- [ ] Device-measured server latency and real meter readings — blocked on external Android VPN service and physical-device verification
