@@ -19,6 +19,7 @@ The Android companion must implement:
 ## Public-server safety
 - Public server operators are not trusted or verified; label them accordingly and do not connect automatically.
 - Use a reviewed, attributed public subscription source with supported configurations; show partial-import errors and source freshness.
+- Evaluate [FastNodes](https://github.com/rtwo2/FastNodes) and [free-v2ray-public-list](https://github.com/ebrasha/free-v2ray-public-list) as candidate sources; verify their current format, license, and availability before choosing. Inclusion is not a safety endorsement.
 - Parse links locally and never send server credentials to AI or analytics.
 - Do not invent locations from server names or use server-side/browser HTTP response times as device tunnel latency.
 
