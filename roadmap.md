@@ -1,4 +1,5 @@
 # Netcon
+- [ ] Generate and inspect matching Android, iOS, web and Play Store icon assets; deliver a downloadable icon kit
 - [x] Clean logo transparency and matching favicon; inspected against light and dark surfaces
 - [x] Create five cohesive illustrated welcome screens, navigation and replay; completion persists locally
 - [x] Export five 1080×1920 portrait welcome artworks for future Play Store use; inspected all five artworks and welcome views, refined illustration/copy clearance
