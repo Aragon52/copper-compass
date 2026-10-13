@@ -1,6 +1,9 @@
 export type Language = 'en' | 'my';
 export const languageStorageKey = 'netcon-language-v1';
 export const myanmar: Record<string, string> = {
+  'Software engineering, product design and digital marketing.': 'ဆော့ဖ်ဝဲဖန်တီးခြင်း၊ ထုတ်ကုန်ဒီဇိုင်းနှင့် ဒစ်ဂျစ်တယ်စျေးကွက်ရှာဖွေရေး။',
+  'Contact Artesys through the consultation form on its official website.': 'Artesys ကို တရားဝင်ဝဘ်ဆိုက်ရှိ ဆွေးနွေးတိုင်ပင်မှုဖောင်မှ ဆက်သွယ်နိုင်သည်။',
+  'Contact Artesys': 'Artesys ကို ဆက်သွယ်ရန်',
   'CONFIG': 'CONFIG', 'App settings': 'အက်ပ်ဆက်တင်များ', 'About Netcon': 'Netcon အကြောင်း', 'Developer & studio': 'ဖန်တီးသူနှင့် စတူဒီယို', 'Development studio': 'ဖန်တီးသည့် စတူဒီယို', 'Contact': 'ဆက်သွယ်ရန်', 'How-to guides': 'အသုံးပြုနည်းများ', 'FAQs': 'မေးလေ့ရှိသော မေးခွန်းများ', 'Studio website': 'စတူဒီယို ဝဘ်ဆိုက်',
   'The selected server’s protocol is disabled. Enable it in CONFIG.': 'ရွေးထားသည့် ဆာဗာ၏ protocol ကို ပိတ်ထားသည်။ CONFIG တွင် ဖွင့်ပါ။',
   'A connection configuration client for Myanmar, with local imports, public server browsing and Gemini recommendations.': 'Myanmar အသုံးပြုသူများအတွက် စက်တွင်း configuration ထည့်သွင်းမှု၊ အများသုံးဆာဗာစာရင်းနှင့် Gemini အကြံပြုချက်များပါဝင်သည့် အက်ပ်ဖြစ်သည်။',
