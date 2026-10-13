@@ -8,3 +8,8 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep VPN tunnel behavior explicitly simulated in the web interface; real tunneling requires a native VPN service and Xray core.
+- Parse configuration links and QR images locally in pure TypeScript; keep credentials out of AI recommendation payloads.
+- Keep optional Gemini keys session-only and send them only to the same-origin server function for provider requests.
+- Model client sections as in-place instrument tabs, with protocol parsing and export isolated from presentation components.
