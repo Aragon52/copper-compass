@@ -1,5 +1,5 @@
 # Netcon
-- [ ] Move SETTINGS above language selection; separate switch indicator lamps from lever tips and verify clear on/off states
+- [x] Move SETTINGS above language selection; separate indicator lamps from lever tips with copper-on/dark-off states and matching Kill switch readout; verified all five switches and placement at 360px, 393px and desktop, 21 tests pass
 - [x] Rename network tab CONFIG; add collapsible SETTINGS dashboard with appearance, verified Artesys studio/contact links, About/version, guides and FAQs; verified English/Myanmar at 360px, 393px and desktop, all 21 tests pass
 - [x] Add English/Myanmar pill language selection and local translations without translating brands; verify all views and saved choice
 - [x] Match the live connection instrument panel to the shared machined-steel finish; verify phone and desktop controls
