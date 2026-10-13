@@ -1,6 +1,6 @@
 # Ai V2Ray Client
-- [ ] Instrument design and connection simulation
-- [ ] Local URI parser, server imports, QR and configuration export
-- [ ] Settings and diagnostics
-- [ ] Intent recommendations and Gemini integration
-- [ ] Verify parser and desktop/mobile flows
+- [x] Instrument design and connection simulation
+- [x] Local URI parser, server imports, QR and configuration export
+- [x] Settings and diagnostics
+- [x] Intent recommendations and Gemini integration
+- [x] Verify parser and desktop/mobile flows
