@@ -1,0 +1,14 @@
+export const appGuides = [
+  { title: 'Import a server', steps: ['Open CONNECTION → MANAGE SERVERS.', 'Choose Public directory to browse and import a node, or add your own URI, manual configuration, subscription or QR image.', 'Select the imported server from My servers. Public servers are untrusted.'] },
+  { title: 'Ask Gemini for a recommendation', steps: ['Import servers first, then choose a purpose such as YouTube, Facebook or PUBG, or write your own.', 'Select FIND MY CONFIG, then USE SERVER to apply the recommendation.', 'An optional Gemini key is kept for this session only. Never put passwords or credentials in your purpose.'] },
+  { title: 'Configure and export', steps: ['Open CONFIG to choose DNS, enabled protocols, routing rules and the native Kill switch preference.', 'Select a server, then use EXPORT XRAY JSON or COPY CONFIGURATION.', 'Use the exported file in an Xray-compatible native client. Browser settings do not control device traffic.'] },
+  { title: 'Preview the instruments', steps: ['Select a server and press the power button on CONNECTION.', 'The handshake, gauges and odometers show a simulation, not measured device traffic.', 'Press the power button again to stop the simulation.'] },
+];
+export const appFaqs = [
+  { question: 'Does this web app protect my traffic?', answer: 'No. Netcon web simulates connections. A native Android VPN service with Xray core is required for a real tunnel, DNS enforcement, routing and Kill switch protection.' },
+  { question: 'Are public servers safe and latency-tested?', answer: 'Public servers are untrusted and may observe traffic. Availability is not guaranteed. Locations are source-reported; latency is unmeasured until a native service is available.' },
+  { question: 'Where are my ratings and language saved?', answer: 'Personal ratings and your English or Myanmar choice are saved in this browser. They do not sync between devices and may be lost when browser storage is cleared.' },
+  { question: 'What is shared with Gemini?', answer: 'Your purpose and a limited list of server names, protocols and latency values are sent for recommendations. Configuration credentials are excluded. Optional API keys last only for this session.' },
+  { question: 'Why did a subscription or QR import fail?', answer: 'A subscription provider must allow browser access; otherwise paste its subscription content. For QR imports, allow camera permission or upload a clear QR image. Supported links are vmess://, vless://, trojan:// and ss://.' },
+  { question: 'Why is JSON export disabled?', answer: 'Select an imported server first. Export includes that server and your CONFIG preferences. Review it before sharing: exported configuration contains server credentials.' },
+];
