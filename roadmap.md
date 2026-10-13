@@ -1,4 +1,5 @@
-# Ai V2Ray Client
+# Netcon
+- [ ] Rename the client Netcon and generate, inspect, and apply a professional luxury communication logo with matching favicon
 - [x] Instrument design and connection simulation
 - [x] Local URI parser, server imports, QR and configuration export
 - [x] Settings and diagnostics
