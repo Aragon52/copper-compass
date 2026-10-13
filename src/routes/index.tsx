@@ -1,7 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useServerFn } from '@tanstack/react-start';
 import { useEffect, useState } from 'react';
-import { Zap, Power, Settings, Info, Sparkles, ArrowUpRight, ChevronRight, ShieldCheck, LockKeyhole, ArrowDown, ArrowUp, Globe2, Radio, Eye, EyeOff, Gamepad2, Play, Crosshair, Shield, KeyRound, Check, RefreshCw } from 'lucide-react';
+import { Zap, Power, Settings, Info, Sparkles, ArrowUpRight, ChevronRight, ShieldCheck, LockKeyhole, ArrowDown, ArrowUp, Radio, Eye, EyeOff, Crosshair, Shield, KeyRound, Check, RefreshCw } from 'lucide-react';
+import { siFacebook, siInstagram, siYoutube, siPubg } from 'simple-icons';
 import { Button } from '@/components/ui/button';
 import { Gauge } from '@/components/client/Gauge';
 import { Flag } from '@/components/client/Flag';
@@ -20,7 +21,16 @@ export const Route = createFileRoute('/')({
   head: () => ({ meta: [{ title: 'Netcon — Precision Connection Control' }, { name: 'description', content: 'Netcon: browse untrusted public V2Ray servers, save personal ratings, import configurations locally, and preview simulated steel-and-copper connection instruments.' }, { property: 'og:title', content: 'Netcon — Precision Connection Control' }, { property: 'og:description', content: 'Netcon. Local configuration, intelligent recommendations, and precision connection control.' }, { property: 'og:type', content: 'website' }, { name: 'twitter:card', content: 'summary_large_image' }] }),
   component: Index,
 });
-const quickActions = [{ label: 'PUBG Mobile', icon: Gamepad2 }, { label: 'Facebook & IG', icon: Globe2 }, { label: 'YouTube 4K', icon: Play }, { label: 'Low Latency Gaming', icon: Crosshair }, { label: 'Anti-Censorship', icon: Shield }];
+function BrandIcon({ path, brand }: { path: string; brand: string }) {
+  return <svg viewBox="0 0 24 24" className={`preset-brand preset-brand-${brand}`} aria-hidden="true"><path d={path} /></svg>;
+}
+const quickActions = [
+  { label: 'PUBG Mobile', icon: () => <BrandIcon path={siPubg.path} brand="pubg" /> },
+  { label: 'Facebook & IG', icon: () => <span className="preset-brand-pair"><BrandIcon path={siFacebook.path} brand="facebook" /><BrandIcon path={siInstagram.path} brand="instagram" /></span> },
+  { label: 'YouTube 4K', icon: () => <BrandIcon path={siYoutube.path} brand="youtube" /> },
+  { label: 'Low Latency Gaming', icon: Crosshair },
+  { label: 'Anti-Censorship', icon: Shield },
+];
 function Index() {
   const [welcome, setWelcome] = useState(false);
   useEffect(() => { try { setWelcome(localStorage.getItem(welcomeStorageKey) !== 'done'); } catch { setWelcome(true); } }, []);
