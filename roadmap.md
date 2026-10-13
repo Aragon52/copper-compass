@@ -1,4 +1,5 @@
 # Netcon
+- [x] Match the live connection instrument panel to the shared machined-steel finish; verify phone and desktop controls
 - [x] Generate and inspect matching Android, iOS, web and Play Store icon assets; deliver a downloadable icon kit
 - [x] Clean logo transparency and matching favicon; inspected against light and dark surfaces
 - [x] Create five cohesive illustrated welcome screens, navigation and replay; completion persists locally

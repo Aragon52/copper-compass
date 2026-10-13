@@ -251,16 +251,31 @@ h1 { font-weight: 800; font-size: 29px; color: var(--engrave-copper); text-shado
 .recommend-button { height: 44px; }
 .active-server { padding-inline: 25px; }
 .section-heading, .deck-heading .micro-label, .instrument-label, .connection-footer, .chassis-footer { color: var(--dial-label); text-shadow: 0 1px 1px var(--deep-ink); }
-.control-deck { background: var(--chassis-gradient); border: 1px solid var(--bevel); border-radius: 7px; padding: 16px 14px 0; box-shadow: inset 0 1px 0 var(--plate-light), 0 4px 7px var(--deep-ink); }
+.control-deck { background: var(--tray-gradient); border: 1px solid var(--plate-mid); border-radius: 7px; padding: 24px 18px 0; box-shadow: var(--panel-relief); }
+.control-deck::before, .control-deck::after { content: ''; position: absolute; width: 10px; height: 10px; top: 10px; border-radius: 50%; background: linear-gradient(135deg, var(--plate-light), var(--bevel) 46%, var(--deep-ink) 48%, var(--deep-ink) 54%, var(--plate-mid) 56%, var(--plate-light)); border: 1px solid var(--shadow); box-shadow: 0 1px 1px var(--shadow); pointer-events: none; }
+.control-deck::before { left: 8px; }
+.control-deck::after { right: 8px; }
+.control-deck .deck-heading { padding-bottom: 13px; border-bottom: 1px solid var(--plate-shade); box-shadow: 0 1px 0 var(--plate-light); gap: 12px; }
+.control-deck .deck-heading .micro-label { color: var(--engrave-ink); text-shadow: var(--incised-shadow); font-size: 10px; font-weight: 500; }
+.control-deck .deck-heading > span:last-child { font-size: 8px; text-align: right; }
+.control-deck .tiny-light { width: 6px; height: 6px; flex-shrink: 0; background: var(--bevel); border: 1px solid var(--shadow); box-shadow: 0 1px 0 var(--plate-light); }
+.control-deck .tiny-light.live { background: var(--online); box-shadow: 0 0 6px var(--online); }
+.control-deck .instrument-grid { margin: 18px 0 0; gap: 16px; grid-template-columns: minmax(0, 1fr) minmax(0, .85fr) minmax(0, 1fr); }
+.control-deck .instrument-label, .control-deck .power-state, .control-deck .connection-duration { color: var(--engrave-ink); text-shadow: var(--incised-shadow); }
+.control-deck .instrument-label { font-size: 10px; font-weight: 500; margin-top: 0; }
+.control-deck .power-state { color: var(--engrave-copper); }
+.control-deck .connection-state-line { color: var(--engrave-ink); text-shadow: var(--incised-shadow); border-top: 1px solid var(--plate-shade); box-shadow: inset 0 1px 0 var(--plate-light); margin-top: 20px; padding: 14px 0; flex-wrap: wrap; }
+.control-deck .connection-state-line .simulation-tag { color: var(--engrave-copper); border-color: var(--bevel); background: var(--brush-grain), var(--input); text-shadow: none; }
 .gauge-face { fill: var(--plate-mid); stroke: var(--plate-light); stroke-width: 2; }
-.gauge-rim { fill: var(--bevel); stroke: var(--plate-light); stroke-width: 2; }
+.gauge-rim { fill: var(--plate-shade); stroke: var(--plate-light); stroke-width: 2; filter: drop-shadow(0 2px 2px var(--bevel)); }
 .gauge-scale, .gauge-unit, .gauge-brand, .gauge-value { fill: var(--engrave-ink); filter: none; text-shadow: var(--incised-shadow); }
 .tick-major, .tick-minor { stroke: var(--engrave-ink); }
 .gauge-track { stroke: var(--plate-shade); }
-.power-housing { width: 150px; height: 150px; border-radius: 50%; padding: 10px; background: var(--metal-gradient); border: 2px solid var(--copper-highlight); box-shadow: 0 0 0 3px var(--copper-bevel), 0 3px 10px var(--deep-ink), inset 0 1px 0 var(--plate-light); }
+.power-housing { width: 150px; height: 150px; border-radius: 50%; padding: 10px; background: var(--metal-gradient); border: 1px solid var(--bevel); box-shadow: inset 0 1px 0 var(--plate-light), inset 0 -2px 2px var(--bevel), 0 0 0 2px var(--plate-mid), 0 0 0 3px var(--bevel), 0 3px 5px var(--shadow); }
+.connected.power-housing { box-shadow: inset 0 1px 0 var(--plate-light), 0 0 0 2px var(--primary), 0 0 0 3px var(--copper-bevel), 0 3px 5px var(--shadow); }
 .power-button, .connected .power-button, .connecting .power-button { border-radius: 50%; background: var(--metal-gradient); box-shadow: inset 0 2px 2px var(--plate-light), inset 0 -4px 5px var(--bevel), 0 3px 4px var(--shadow); gap: 0; }
 .power-button::before, .power-button::after, .power-button-dot { display: none; }
-.power-button .power-bolt { color: var(--engrave-ink); fill: none; width: 55px; height: 55px; filter: drop-shadow(0 1px 0 var(--plate-light)); }
+.power-button .power-bolt { color: var(--engrave-copper); fill: none; width: 55px; height: 55px; filter: drop-shadow(0 1px 0 var(--plate-light)); }
 .connection-state-line { color: var(--dial-label); }
 .connection-state-line .simulation-tag { color: var(--dial-label); }
 .telemetry-strip { margin-top: 17px; border-radius: 5px; }
@@ -291,8 +306,14 @@ h1 { font-weight: 800; font-size: 29px; color: var(--engrave-copper); text-shado
   .purpose-input { font-size: 12px; }
   .quick-chip { font-size: 11px; height: 36px; }
   .active-server { padding: 17px 18px; height: 86px; }
-  .control-deck { padding: 13px 8px 0; }
-  .instrument-grid { margin-inline: -4px; grid-template-columns: 1fr .9fr 1fr; }
+  .control-deck { padding: 25px 10px 0; }
+  .control-deck .deck-heading { gap: 8px; align-items: flex-start; }
+  .control-deck .deck-heading .micro-label { font-size: 8px; line-height: 1.5; }
+  .control-deck .deck-heading > span:last-child { font-size: 7px; max-width: 105px; }
+  .control-deck .instrument-grid { margin: 17px 0 0; gap: 4px; grid-template-columns: minmax(0, 1fr) minmax(0, .9fr) minmax(0, 1fr); }
+  .control-deck .instrument-label { font-size: 7px; }
+  .control-deck .power-state { font-size: 6px; margin-top: 13px; }
+  .control-deck .connection-state-line { font-size: 9px; margin-top: 16px; gap: 5px; }
   .power-housing { width: 92px; height: 92px; padding: 7px; }
   .power-button .power-bolt { width: 38px; height: 38px; }
   .diagnostic-row, .diagnostic-row:last-child { padding: 19px 23px; gap: 10px; min-height: 76px; }
