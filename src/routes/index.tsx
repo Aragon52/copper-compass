@@ -1,24 +1,64 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from '@tanstack/react-router';
+import { useServerFn } from '@tanstack/react-start';
+import { useEffect, useState } from 'react';
+import { Zap, Settings, Info, Sparkles, ArrowUpRight, ChevronRight, ShieldCheck, LockKeyhole, ArrowDown, ArrowUp, Globe2, Radio, Eye, EyeOff, Gamepad2, Play, Crosshair, Shield, KeyRound, Check, RefreshCw } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Gauge } from '@/components/client/Gauge';
+import { Flag } from '@/components/client/Flag';
+import { ServerManager } from '@/components/client/ServerManager';
+import { SettingsPanel } from '@/components/client/SettingsPanel';
+import { InfoPanel } from '@/components/client/InfoPanel';
+import { defaultSettings, presetNodes, parseUri, type ServerNode } from '@/lib/v2ray';
+import { recommendServer } from '@/lib/recommend.functions';
+import steelTexture from '@/assets/brushed-steel.jpg';
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute('/')({
+  head: () => ({ meta: [{ title: 'Ai V2Ray Client — Precision Connection Control' }, { name: 'description', content: 'Steel and copper VPN client with local VLESS, VMess, Trojan and Shadowsocks configuration parsing, Gemini recommendations and simulated connection instruments.' }, { property: 'og:title', content: 'Ai V2Ray Client — Precision Connection Control' }, { property: 'og:description', content: 'Local configuration. Intelligent recommendations. Precision connection control.' }, { property: 'og:type', content: 'website' }, { name: 'twitter:card', content: 'summary_large_image' }] }),
   component: Index,
 });
-
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
+const quickActions = [{ label: 'PUBG Mobile', icon: Gamepad2 }, { label: 'Facebook & IG', icon: Globe2 }, { label: 'YouTube 4K', icon: Play }, { label: 'Low Latency Gaming', icon: Crosshair }, { label: 'Anti-Censorship', icon: Shield }];
 function Index() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
+  const [tab, setTab] = useState<'connection' | 'settings' | 'info'>('connection');
+  const [nodes, setNodes] = useState<ServerNode[]>(presetNodes); const [node, setNode] = useState(presetNodes[0]);
+  const [settings, setSettings] = useState(defaultSettings); const [manager, setManager] = useState(false); const [subscription, setSubscription] = useState(false);
+  const [status, setStatus] = useState<'offline' | 'connecting' | 'connected'>('offline');
+  const [elapsed, setElapsed] = useState(0); const [telemetry, setTelemetry] = useState({ ping: 0, speed: 0, down: 0, up: 0, received: 0, sent: 0 });
+  const [purpose, setPurpose] = useState(''); const [apiKey, setApiKey] = useState(''); const [showKey, setShowKey] = useState(false); const [aiBusy, setAiBusy] = useState(false); const [recommendation, setRecommendation] = useState<{ serverId: string; reason: string } | null>(null); const [error, setError] = useState('');
+  const recommend = useServerFn(recommendServer); const connected = status === 'connected';
+  useEffect(() => { if (status !== 'connecting') return; const t = setTimeout(() => setStatus('connected'), 2300); return () => clearTimeout(t); }, [status]);
+  useEffect(() => {
+    if (!connected) { setElapsed(0); setTelemetry({ ping: 0, speed: 0, down: 0, up: 0, received: 0, sent: 0 }); return; }
+    const tick = () => { const speed = Math.round((24 + Math.random() * 28) * 10) / 10; setTelemetry(old => ({ ping: Math.max(12, node.ping + Math.round(Math.random() * 8 - 4)), speed, down: speed, up: Math.round((2 + Math.random() * 4) * 10) / 10, received: old.received + speed / 8, sent: old.sent + 0.5 })); setElapsed(old => old + 1); };
+    tick(); const t = setInterval(tick, 1000); return () => clearInterval(t);
+  }, [connected, node]);
+  function selectNode(selected: ServerNode) { setNode(selected); setStatus('offline'); }
+  function addNodes(items: ServerNode[]) { setNodes(old => [...old, ...items.filter(n => !old.some(o => o.id === n.id))]); if (items.length > 1) setSubscription(true); }
+  async function askAi() {
+    setError(''); setRecommendation(null);
+    if (!purpose.trim()) { setError('Enter a purpose or choose a quick action.'); return; }
+    if (/^(vmess|vless|trojan|ss):\/\//.test(purpose.trim())) { try { const imported = parseUri(purpose); addNodes([imported]); selectNode(imported); setRecommendation({ serverId: imported.id, reason: 'Configuration parsed locally and selected. Your credentials were not sent to Gemini.' }); } catch (e) { setError(e instanceof Error ? e.message : 'Invalid link.'); } return; }
+    const available = nodes.filter(n => settings.protocols.includes(n.protocol));
+    if (!available.length) { setError('Enable a protocol in Settings first.'); return; }
+    setAiBusy(true);
+    try { const result = await recommend({ data: { purpose, apiKey: apiKey || undefined, servers: available.slice(0, 30).map(n => ({ id: n.id.slice(0, 100), name: n.name, protocol: n.protocol, ping: n.ping })) } }); if ('error' in result) setError(result.error || 'Recommendation unavailable.'); else setRecommendation(result); }
+    catch { setError('Unable to reach Gemini. Please try again.'); } finally { setAiBusy(false); }
+  }
+  function power() { if (status !== 'offline') { setStatus('offline'); return; } if (!settings.protocols.includes(node.protocol)) { setError('The selected server’s protocol is disabled. Enable it in Settings.'); return; } setStatus('connecting'); }
+  const duration = `${Math.floor(elapsed / 3600).toString().padStart(2, '0')}:${Math.floor(elapsed / 60 % 60).toString().padStart(2, '0')}:${(elapsed % 60).toString().padStart(2, '0')}`;
+  return <main className="client-stage"><img className="ambient-metal" src={steelTexture} width={1024} height={1024} alt="" aria-hidden="true" /><div className="outer-brand"><span className="brand-mark"><Zap size={18} /></span><span>AI / V2RAY</span><span className="outer-brand-rule" /><span className="micro-label">PRECISION CONNECTION SYSTEM</span></div>
+    <div className="client-chassis"><img className="chassis-texture" src={steelTexture} width={1024} height={1024} alt="" aria-hidden="true" /><span className="screw screw-tl" /><span className="screw screw-tr" /><span className="screw screw-bl" /><span className="screw screw-br" />
+      <header className="client-header"><div className="client-identity"><div className="logo-key"><Zap /></div><div><div className="header-eyebrow">INTELLIGENT NETWORK INSTRUMENT</div><h1>Ai V2Ray Client<span className="version">V2.4.1</span></h1></div></div><div className={`status-badge ${status}`}><span className="status-led" />{status === 'connected' ? 'CONNECTED' : status === 'connecting' ? 'CONNECTING' : 'OFFLINE'}</div></header>
+      <nav className="instrument-nav" aria-label="Client sections">{([{ id: 'connection', label: 'CONNECTION', icon: Zap }, { id: 'settings', label: 'SETTINGS', icon: Settings }, { id: 'info', label: 'INFO', icon: Info }] as const).map(item => <Button key={item.id} variant="ghost" className={`nav-key ${tab === item.id ? 'nav-active' : ''}`} onClick={() => setTab(item.id)} aria-current={tab === item.id ? 'page' : undefined}><item.icon size={16} /><span>{item.label}</span>{tab === item.id && <span className="tab-indicator" />}</Button>)}</nav>
+      {tab === 'connection' ? <div className="connection-content">
+        <section className="steel-tray ai-tray"><div className="ai-heading"><div className="ai-badge"><Sparkles size={15} /><span>AI <b>·</b> Ask Gemini</span></div><span className="micro-label">A SMARTER WAY TO CONNECT</span></div><label htmlFor="purpose" className="field-label">WHAT DO YOU WANT TO USE THE VPN FOR?</label><div className="purpose-input-wrap"><Sparkles size={16} /><input id="purpose" className="engraved-input purpose-input" placeholder="Type a platform, describe your purpose, or paste a config link…" value={purpose} onChange={e => setPurpose(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') void askAi(); }} /></div><div className="quick-actions">{quickActions.map(item => <Button variant="outline" size="sm" className={`keycap quick-chip ${purpose === item.label ? 'chip-active' : ''}`} key={item.label} onClick={() => setPurpose(item.label)}><item.icon size={12} />{item.label}</Button>)}</div><div className="ai-bottom"><div className="api-field"><KeyRound size={14} /><input aria-label="Gemini API key" type={showKey ? 'text' : 'password'} placeholder="Gemini API key (optional)" value={apiKey} onChange={e => setApiKey(e.target.value)} autoComplete="off" /><Button variant="ghost" size="icon" aria-label={showKey ? 'Hide API key' : 'Show API key'} title={showKey ? 'Hide API key' : 'Show API key'} onClick={() => setShowKey(!showKey)}>{showKey ? <EyeOff /> : <Eye />}</Button></div><Button className="copper-button recommend-button" onClick={askAi} disabled={aiBusy}>{aiBusy ? <RefreshCw className="animate-spin" /> : <Sparkles />}{aiBusy ? 'ANALYZING…' : 'FIND MY CONFIG'}<ArrowUpRight size={14} /></Button></div><div className="ai-security"><LockKeyhole size={11} /><span>Keys stay in this session. Config links are parsed on your device.</span></div>
+        {error && <p className="ai-error" role="alert">{error}</p>}{recommendation && <div className="recommendation" role="status"><Sparkles size={18} /><p>{recommendation.reason}</p>{recommendation.serverId !== node.id && <Button size="sm" className="copper-button" onClick={() => { const found = nodes.find(n => n.id.slice(0, 100) === recommendation.serverId); if (found) selectNode(found); }}><Check />USE SERVER</Button>}</div>}</section>
+        <div className="section-heading"><span><Radio size={14} /> ACTIVE SERVER</span><Button variant="ghost" className="manage-link" onClick={() => setManager(true)}>MANAGE SERVERS<ChevronRight size={12} /></Button></div>
+        <Button variant="ghost" className="steel-tray active-server" onClick={() => setManager(true)}><span className="server-flag"><Flag country={node.country} /></span><span className="active-server-name"><strong>{node.name}</strong><small>{node.country} <span>·</span> {node.demo ? 'Premium route · Preset node' : node.address}</small></span><span className="server-metrics"><span className="protocol-badge">{node.protocol === 'shadowsocks' ? 'SS' : node.protocol.toUpperCase()}</span><span className="server-ping"><span className="mini-led" />{node.ping ? `${node.ping} ms` : '— ms'}</span></span><ChevronRight size={18} className="text-muted-foreground" /></Button>
+        <section className="control-deck"><div className="deck-heading"><span className="micro-label">LIVE CONNECTION INSTRUMENTS</span><span className="micro-label"><span className={`tiny-light ${connected ? 'live' : ''}`} />{connected ? 'SIMULATED TELEMETRY' : 'STANDBY'}</span></div><div className="instrument-grid"><Gauge label="LATENCY PING" value={telemetry.ping} unit="ms" max={180} active={connected} /><div className="power-control"><div className={`power-housing ${status}`}><Button variant="ghost" className="power-button" aria-label={status === 'offline' ? 'Connect VPN simulation' : status === 'connecting' ? 'Cancel connection' : 'Disconnect VPN simulation'} onClick={power}><Zap className="power-bolt" /><span className="power-button-dot" /></Button></div><div className={`power-state ${status}`}>{status === 'offline' ? 'TAP TO CONNECT' : status === 'connecting' ? 'SECURE HANDSHAKE' : 'TAP TO DISCONNECT'}</div><div className="connection-duration">{duration}</div></div><Gauge label="SPEED RATE" value={telemetry.speed} unit="Mbps" max={120} active={connected} /></div><div className="connection-state-line"><span className={`status-led ${connected ? 'online-led' : ''}`} /><span>{connected ? 'Secure tunnel established' : status === 'connecting' ? 'Negotiating encrypted tunnel…' : 'Your tunnel is disconnected'}</span><span className="simulation-tag">SIMULATION</span></div></section>
+        <section className="telemetry-strip"><div><span><ArrowDown size={13} />DOWNLOAD</span><strong>{telemetry.down.toFixed(1)}<small>Mbps</small></strong></div><div><span><ArrowUp size={13} />UPLOAD</span><strong>{telemetry.up.toFixed(1)}<small>Mbps</small></strong></div><div><span>DATA RECEIVED</span><strong>{telemetry.received.toFixed(1)}<small>MB</small></strong></div><div><span>DATA SENT</span><strong>{telemetry.sent.toFixed(1)}<small>MB</small></strong></div></section><div className="connection-footer"><span><ShieldCheck size={13} />ZERO LOGS. ZERO COMPROMISE.</span><span><LockKeyhole size={12} />LOCAL CONFIG ENGINE</span></div>
+      </div> : tab === 'settings' ? <SettingsPanel settings={settings} onChange={s => { setSettings(s); if (!s.protocols.includes(node.protocol)) setStatus('offline'); }} node={node} /> : <InfoPanel node={node} connected={connected} subscription={subscription} />}
+      <footer className="chassis-footer"><span>AI V2RAY <span className="footer-divider">/</span> ENGINEERED FOR PRIVACY</span><span>XRAY CORE <span className="mini-led" /> WEB EDITION</span></footer>
+    </div><div className="below-chassis"><span>BRUSHED STEEL <b>×</b> BURNISHED COPPER</span><span>EST. 2024 <span>·</span> BUILD 2.4.1</span></div>
+    <ServerManager open={manager} onOpenChange={setManager} nodes={nodes.filter(n => settings.protocols.includes(n.protocol))} selected={node.id} onSelect={selectNode} onAdd={addNodes} onDelete={id => { setNodes(old => old.filter(n => n.id !== id)); if (node.id === id) selectNode(presetNodes[0]); }} />
+  </main>;
 }
