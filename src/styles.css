@@ -374,3 +374,37 @@ h1 { font-weight: 800; font-size: 29px; color: var(--engrave-copper); text-shado
 .welcome-edition { display: block; margin-top: 15px; text-align: center; font: 8px var(--font-mono); color: var(--dial-label); }
 @media (max-width: 500px) { .welcome-screen { border: 0; border-radius: 0; } }
 @media (max-height: 650px) { .welcome-art { top: 0; height: 80%; object-fit: contain; }.welcome-title { font-size: 27px; margin-block: 8px; }.welcome-description { font-size: 12px; }.welcome-header { padding-top: 12px; }.welcome-footer { padding-top: 8px; padding-bottom: 12px; }.welcome-navigation { margin-bottom: 5px; }.welcome-edition { margin-top: 8px; } }
+
+.language-selection { position: relative; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 14px; max-width: 904px; margin: 24px auto 4px; color: var(--dial-label); font-size: 13px; }
+.language-pill { display: flex; padding: 4px; gap: 4px; border: 1px solid var(--bevel); border-radius: 999px; background: var(--chassis-gradient); box-shadow: inset 0 1px 4px var(--deep-ink); }
+.language-option { min-width: 106px; height: 40px; border-radius: 999px; color: var(--dial-label); gap: 8px; font-size: 13px; }
+.language-option:hover { background: var(--steel); }
+.language-option.selected { color: var(--engrave-ink); background: var(--key-gradient); box-shadow: var(--key-shadow); }
+.language-radio { width: 12px; height: 12px; border: 1px solid var(--bevel); border-radius: 50%; background: var(--shadow); flex-shrink: 0; }
+.selected .language-radio { border-color: var(--copper-bevel); background: var(--copper-gradient); box-shadow: inset 0 0 0 2px var(--plate-mid); }
+.language-my { --font-sans: 'Noto Sans Myanmar', 'Barlow', sans-serif; --font-display: 'Noto Sans Myanmar', 'Archivo', sans-serif; --font-mono: 'Noto Sans Myanmar', 'IBM Plex Mono', monospace; }
+.language-option[lang="my"] { font-family: 'Noto Sans Myanmar', sans-serif; }
+.language-my .nav-key { font-size: 16px; line-height: 1.7; }
+.language-my .quick-chip, .language-my .import-options button, .language-my .copper-button { height: auto; min-height: 42px; white-space: normal; line-height: 1.8; padding-block: 7px; }
+.language-my .field-label, .language-my .setting-row small, .language-my .privacy-panel p, .language-my .native-guide p { line-height: 1.9; }
+.language-my .ai-security { align-items: flex-start; line-height: 1.8; }
+.language-my .ai-security svg { flex-shrink: 0; margin-top: 4px; }
+.language-my .diagnostic-row > span { font-size: 14px; }
+.language-my .diagnostic-row strong { font-size: 12px; }
+.language-my .active-server { height: auto; min-height: 86px; }
+.language-my .active-server-name small { line-height: 1.8; }
+.language-my .control-deck .deck-heading .micro-label { line-height: 1.8; }
+.language-my .control-deck .power-state { font-size: 8px; line-height: 1.8; min-height: 28px; text-align: center; }
+.language-my .control-deck .instrument-label { line-height: 1.8; }
+.language-my .connection-footer, .language-my .chassis-footer { gap: 12px; flex-wrap: wrap; line-height: 1.8; }
+.language-my .welcome-title { font-size: 27px; line-height: 1.6; }
+.language-my .welcome-description { font-size: 12px; line-height: 1.85; }
+.language-my .welcome-label { line-height: 1.8; }
+@media (max-width: 700px) {
+ .language-my .nav-key { font-size: 12px; }
+ .language-my .control-deck .power-state { font-size: 7px; }
+ .language-my .setting-row > div:first-child { min-width: 0; flex: 1 1 190px; }
+ .language-my .welcome-title { font-size: 23px; margin-block: 8px; }
+ .language-my .welcome-description { font-size: 11px; }
+ .language-my .welcome-copy { padding-inline: 22px; }
+}
