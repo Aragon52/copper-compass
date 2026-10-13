@@ -48,6 +48,7 @@
   --tray-shadow: inset 0 2px 4px color-mix(in oklch, var(--shadow) 65%, transparent), inset 1px 0 2px var(--bevel), inset -1px 0 2px var(--bevel), 0 1px 0 var(--plate-light);
   --key-shadow: inset 0 1px 0 var(--plate-light), inset 0 -1px 0 var(--bevel), 0 2px 2px color-mix(in oklch, var(--shadow) 65%, transparent);
   --incised-shadow: 0 1px 0 var(--engrave-light), 0 -1px 0 color-mix(in oklch, var(--shadow) 35%, transparent);
+  --brand-facebook: #0866FF; --brand-instagram: #FF0069; --brand-youtube: #FF0000; --brand-pubg: #F4B942;
 }
 * { border-color: var(--border); box-sizing: border-box; }
 body { margin: 0; background: var(--background); color: var(--foreground); font-family: var(--font-sans); letter-spacing: 0; }
@@ -234,6 +235,18 @@ h1 { font-weight: 800; font-size: 29px; color: var(--engrave-copper); text-shado
 .purpose-input { height: 49px; font-size: 14px; }
 .quick-actions { gap: 12px; margin-block: 16px 19px; }
 .quick-chip { height: 40px; font-family: var(--font-sans); font-size: 13px; padding-inline: 12px; }
+.quick-actions .quick-chip { border: 1px solid var(--bevel); border-radius: 4px; background: var(--brush-grain), var(--input); color: var(--engrave-ink); box-shadow: none; text-shadow: none; gap: 8px; transition: background 120ms, border-color 120ms; }
+.quick-actions .quick-chip:hover { background: var(--accent); filter: none; }
+.quick-actions .quick-chip:active { transform: none; box-shadow: none; }
+.quick-actions .quick-chip.chip-active { border-color: var(--engrave-copper); background: color-mix(in oklch, var(--primary) 16%, var(--input)); box-shadow: none; }
+.quick-actions .quick-chip:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; box-shadow: none; }
+.quick-chip svg { width: 17px; height: 17px; flex-shrink: 0; }
+.preset-brand { fill: currentColor; }
+.preset-brand-facebook { color: var(--brand-facebook); }
+.preset-brand-instagram { color: var(--brand-instagram); }
+.preset-brand-youtube { color: var(--brand-youtube); }
+.preset-brand-pubg { color: var(--brand-pubg); }
+.preset-brand-pair { display: inline-flex; align-items: center; gap: 5px; }
 .copper-button { background: var(--key-gradient); color: var(--engrave-ink); text-shadow: var(--incised-shadow); box-shadow: var(--panel-relief); border-color: var(--bevel); }
 .recommend-button { height: 44px; }
 .active-server { padding-inline: 25px; }
