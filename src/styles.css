@@ -254,6 +254,14 @@ h1 { font-weight: 800; font-size: 29px; color: var(--engrave-copper); text-shado
 .diagnostic-row > span { color: var(--engrave-ink); font-size: 18px; font-weight: 600; }
 .diagnostic-row strong { font-family: var(--font-sans); font-size: 15px; font-weight: 600; overflow-wrap: anywhere; }
 .chassis-footer { margin: 0 -20px; padding-inline: 20px; }
+.section-heading .micro-label, .manage-link { color: var(--dial-label); text-shadow: 0 1px 1px var(--deep-ink); }
+.analog-toggle { width: 48px; height: 58px; border: 0; background: transparent; box-shadow: none; }
+.analog-toggle[data-state] { background: transparent; }
+.analog-toggle::before { inset: 10px 2px 2px; border-radius: 50%; border: 5px solid var(--plate-mid); background: radial-gradient(circle, var(--deep-ink) 48%, var(--bevel) 52%, var(--shadow) 66%); box-shadow: 0 0 0 1px var(--shadow), 0 0 0 3px var(--plate-shade), 0 3px 4px var(--deep-ink), inset 0 1px 2px var(--plate-light); }
+.analog-toggle::after { top: 0; }
+.analog-toggle > span { left: 16px; right: auto; bottom: 0; width: 16px; height: 30px; border-radius: 8px; background: linear-gradient(90deg, var(--bevel), var(--plate-light) 38%, var(--plate-mid) 70%, var(--bevel)); box-shadow: inset 0 2px 0 var(--plate-light), inset 0 -3px 2px var(--bevel), 0 4px 4px var(--deep-ink); }
+.analog-toggle > span[data-state=checked] { bottom: 19px; height: 34px; border-radius: 8px; box-shadow: inset 0 2px 0 var(--plate-light), inset 0 -3px 2px var(--bevel), 0 4px 4px var(--deep-ink); }
+.analog-toggle > span::after { inset: 3px 2px auto; height: 8px; border-radius: 50%; background: var(--metal-gradient); opacity: 1; }
 @media (max-width: 700px) {
   .client-stage { padding: 10px 7px; }
   .client-chassis { padding: 24px 12px 0; }

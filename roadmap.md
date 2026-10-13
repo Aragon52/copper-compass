@@ -6,4 +6,4 @@
 - [x] Verify parser and desktop/mobile flows
 - [x] Apply reference-inspired brushed plates and incised typography across all client views; verify readability and controls
 - [x] Add panel-mounted analog controls and verify switch states and connection flow
-- [ ] Match supplied actual metal-panel designs with a straight copper title; verify all tabs and connection controls
+- [x] Match supplied actual metal-panel designs with a straight copper title; verify all tabs and connection controls
