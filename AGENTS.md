@@ -16,3 +16,4 @@
 - Express machined surfaces and incised typography through shared semantic CSS material tokens and client selectors so all tabs and dialogs stay visually consistent without changing connection logic.
 - Keep public-directory ingestion and personal rating persistence in a browser-safe module separate from UI; direct source fetches avoid relaying configuration credentials through our server.
 - Keep the external Android VPN adapter as a typed contract only until an actual service is supplied; fail unavailable rather than treating simulated protection as native enforcement.
+- Import the client logo from a shared bundled raster asset and derive the public favicon from its emblem; this keeps the header and browser identity consistent without altering VPN logic.
