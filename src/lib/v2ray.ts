@@ -2,7 +2,7 @@ export type Protocol = 'vless' | 'vmess' | 'trojan' | 'shadowsocks';
 export type ServerNode = { id: string; name: string; protocol: Protocol; address: string; port: number; credential: string; ping: number; country: string; flag: string; network: string; security: string; params: Record<string, string>; demo?: boolean };
 export type ClientSettings = { killSwitch: boolean; dns: string; customDns: string; routing: string; protocols: Protocol[] };
 export const defaultSettings: ClientSettings = { killSwitch: true, dns: '1.1.1.1', customDns: '', routing: 'Bypass LAN', protocols: ['vless', 'vmess', 'trojan', 'shadowsocks'] };
-export const presetNodes: ServerNode[] = [
+export const presetNodes: [ServerNode, ...ServerNode[]] = [
   { id: 'sg-01', name: 'Singapore · SG-01', protocol: 'vless', address: 'sg.example.com', port: 443, credential: 'a1b2c3d4-1111-4111-8111-123456789abc', ping: 24, country: 'Singapore', flag: '🇸🇬', network: 'tcp', security: 'tls', params: { sni: 'sg.example.com' }, demo: true },
   { id: 'jp-02', name: 'Tokyo · JP-02', protocol: 'vmess', address: 'jp.example.com', port: 443, credential: 'a1b2c3d4-2222-4222-8222-123456789abc', ping: 46, country: 'Japan', flag: '🇯🇵', network: 'ws', security: 'tls', params: { path: '/connect', sni: 'jp.example.com' }, demo: true },
   { id: 'de-03', name: 'Frankfurt · DE-03', protocol: 'trojan', address: 'de.example.com', port: 443, credential: 'demo-password', ping: 112, country: 'Germany', flag: '🇩🇪', network: 'tcp', security: 'tls', params: {}, demo: true },
@@ -18,22 +18,23 @@ function validateNode(node: ServerNode): ServerNode {
   if (['vless', 'vmess'].includes(node.protocol) && !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(node.credential)) throw new Error('VLESS and VMess require a valid UUID.');
   if (!['tcp', 'ws', 'grpc', 'http', 'httpupgrade', 'xhttp', 'kcp'].includes(node.network)) throw new Error(`Unsupported transport: ${node.network}`);
   if (!['none', 'tls', 'reality'].includes(node.security)) throw new Error(`Unsupported security: ${node.security}`);
-  if (node.security === 'reality' && !node.params.pbk) throw new Error('Reality requires a public key (pbk).');
+  if (node.security === 'reality' && !node.params['pbk']) throw new Error('Reality requires a public key (pbk).');
   return node;
 }
 export function parseUri(raw: string): ServerNode {
   const uri = raw.trim();
-  const base: ServerNode = { id: uri, name: 'Imported server', protocol: 'vless', address: '', port: 443, credential: '', ping: 0, country: 'Custom server', flag: '🌐', network: 'tcp', security: 'none', params: {} };
+  const safeId = 'node-' + Array.from(uri).reduce((hash, c) => (Math.imul(hash, 31) + c.charCodeAt(0)) | 0, 0).toString(16);
+  const base: ServerNode = { id: safeId, name: 'Imported server', protocol: 'vless', address: '', port: 443, credential: '', ping: 0, country: 'Custom server', flag: '🌐', network: 'tcp', security: 'none', params: {} };
   try {
     if (uri.startsWith('vmess://')) {
       const data = JSON.parse(decodeBase64(uri.slice(8))) as Record<string, unknown>;
       const params: Record<string, string> = {};
       for (const key of ['path', 'host', 'sni', 'alpn', 'fp', 'aid', 'scy', 'type']) if (data[key] != null) params[key] = String(data[key]);
-      return validateNode({ ...base, protocol: 'vmess', name: String(data.ps || 'VMess server'), address: String(data.add || ''), port: Number(data.port), credential: String(data.id || ''), network: String(data.net || 'tcp'), security: String(data.tls || 'none'), params });
+      return validateNode({ ...base, protocol: 'vmess', name: String(data['ps'] || 'VMess server'), address: String(data['add'] || ''), port: Number(data['port']), credential: String(data['id'] || ''), network: String(data['net'] || 'tcp'), security: String(data['tls'] || 'none'), params });
     }
     if (uri.startsWith('ss://')) {
-      const [body, fragment] = uri.slice(5).split('#');
-      const [authority, query] = body.split('?');
+      const [body = '', fragment] = uri.slice(5).split('#');
+      const [authority = '', query] = body.split('?');
       let expanded = authority;
       if (!authority.includes('@')) expanded = decodeBase64(authority);
       const split = expanded.lastIndexOf('@');
@@ -52,7 +53,7 @@ export function parseUri(raw: string): ServerNode {
     const url = new URL(uri);
     const protocol = url.protocol === 'vless:' ? 'vless' : 'trojan';
     const params = Object.fromEntries(url.searchParams);
-    return validateNode({ ...base, protocol, name: url.hash ? decodeURIComponent(url.hash.slice(1)) : `${protocol.toUpperCase()} server`, address: url.hostname.replace(/^\[|\]$/g, ''), port: Number(url.port || 443), credential: decodeURIComponent(url.username + (url.password ? ':' + url.password : '')), network: params.type || 'tcp', security: params.security || (protocol === 'trojan' ? 'tls' : 'none'), params });
+    return validateNode({ ...base, protocol, name: url.hash ? decodeURIComponent(url.hash.slice(1)) : `${protocol.toUpperCase()} server`, address: url.hostname.replace(/^\[|\]$/g, ''), port: Number(url.port || 443), credential: decodeURIComponent(url.username + (url.password ? ':' + url.password : '')), network: params['type'] || 'tcp', security: params['security'] || (protocol === 'trojan' ? 'tls' : 'none'), params });
   } catch (error) { throw new Error(error instanceof Error ? error.message : 'Invalid configuration link.'); }
 }
 export function parseSubscription(text: string): ServerNode[] {
@@ -65,18 +66,18 @@ export function createManualNode(input: Partial<ServerNode>): ServerNode { retur
 export function makeConfig(node: ServerNode, settings: ClientSettings = defaultSettings) {
   const p = node.params;
   const stream: Record<string, unknown> = { network: node.network, security: node.security };
-  if (node.security === 'tls') stream.tlsSettings = { serverName: p.sni || node.address, fingerprint: p.fp || 'chrome', ...(p.alpn ? { alpn: p.alpn.split(',') } : {}) };
-  if (node.security === 'reality') stream.realitySettings = { serverName: p.sni || node.address, fingerprint: p.fp || 'chrome', publicKey: p.pbk, shortId: p.sid || '', spiderX: p.spx || '/' };
-  if (node.network === 'ws') stream.wsSettings = { path: p.path || '/', ...(p.host ? { headers: { Host: p.host } } : {}) };
-  if (node.network === 'grpc') stream.grpcSettings = { serviceName: p.serviceName || p.path || '', multiMode: p.mode === 'multi' };
-  if (node.network === 'http') stream.httpSettings = { path: p.path || '/', host: p.host ? p.host.split(',') : [node.address] };
-  if (node.network === 'httpupgrade' || node.network === 'xhttp') stream[`${node.network}Settings`] = { path: p.path || '/', host: p.host || node.address };
-  if (node.network === 'kcp') stream.kcpSettings = { header: { type: p.type || 'none' } };
-  const user = node.protocol === 'vmess' ? { id: node.credential, alterId: Number(p.aid || 0), security: p.scy || 'auto' } : { id: node.credential, encryption: 'none', ...(p.flow ? { flow: p.flow } : {}) };
-  const outbound = { tag: 'proxy', protocol: node.protocol, settings: ['vless', 'vmess'].includes(node.protocol) ? { vnext: [{ address: node.address, port: node.port, users: [user] }] } : { servers: [{ address: node.address, port: node.port, password: node.credential, ...(node.protocol === 'shadowsocks' ? { method: p.method } : {}) }] }, streamSettings: stream };
+  if (node.security === 'tls') stream['tlsSettings'] = { serverName: p['sni'] || node.address, fingerprint: p['fp'] || 'chrome', ...(p['alpn'] ? { alpn: p['alpn'].split(',') } : {}) };
+  if (node.security === 'reality') stream['realitySettings'] = { serverName: p['sni'] || node.address, fingerprint: p['fp'] || 'chrome', publicKey: p['pbk'], shortId: p['sid'] || '', spiderX: p['spx'] || '/' };
+  if (node.network === 'ws') stream['wsSettings'] = { path: p['path'] || '/', ...(p['host'] ? { headers: { Host: p['host'] } } : {}) };
+  if (node.network === 'grpc') stream['grpcSettings'] = { serviceName: p['serviceName'] || p['path'] || '', multiMode: p['mode'] === 'multi' };
+  if (node.network === 'http') stream['httpSettings'] = { path: p['path'] || '/', host: p['host'] ? p['host'].split(',') : [node.address] };
+  if (node.network === 'httpupgrade' || node.network === 'xhttp') stream[`${node.network}Settings`] = { path: p['path'] || '/', host: p['host'] || node.address };
+  if (node.network === 'kcp') stream['kcpSettings'] = { header: { type: p['type'] || 'none' } };
+  const user = node.protocol === 'vmess' ? { id: node.credential, alterId: Number(p['aid'] || 0), security: p['scy'] || 'auto' } : { id: node.credential, encryption: 'none', ...(p['flow'] ? { flow: p['flow'] } : {}) };
+  const outbound = { tag: 'proxy', protocol: node.protocol, settings: ['vless', 'vmess'].includes(node.protocol) ? { vnext: [{ address: node.address, port: node.port, users: [user] }] } : { servers: [{ address: node.address, port: node.port, password: node.credential, ...(node.protocol === 'shadowsocks' ? { method: p['method'] } : {}) }] }, streamSettings: stream };
   const rules: Record<string, unknown>[] = [];
   if (settings.routing !== 'Global') rules.push({ type: 'field', ip: ['geoip:private'], outboundTag: 'direct' });
   if (settings.routing === 'Bypass Mainland/Domestic') rules.push({ type: 'field', ip: ['geoip:cn'], outboundTag: 'direct' }, { type: 'field', domain: ['geosite:cn'], outboundTag: 'direct' });
   if (settings.routing === 'Rule-based') rules.push({ type: 'field', domain: ['geosite:category-ads-all'], outboundTag: 'block' });
-  return { log: { loglevel: 'none' }, dns: { servers: [settings.dns === 'custom' ? settings.customDns || '1.1.1.1' : settings.dns] }, inbounds: [{ tag: 'socks', listen: '127.0.0.1', port: 10808, protocol: 'socks', settings: { udp: true } }, { tag: 'http', listen: '127.0.0.1', port: 10809, protocol: 'http', settings: {} }], outbounds: [outbound, { tag: 'direct', protocol: 'freedom', settings: {} }, { tag: 'block', protocol: 'blackhole', settings: {} }], routing: { domainStrategy: 'IPIfNonMatch', rules } };
+  return { log: { loglevel: 'none' }, dns: { servers: [settings.dns === 'custom' ? settings.customDns || '1.1.1.1' : settings.dns] }, inbounds: [{ tag: 'socks', listen: '127.0.0.1', port: 10808, protocol: 'socks', settings: { udp: true } }, { tag: 'http', listen: '127.0.0.1', port: 10809, protocol: 'http', settings: {} }], outbounds: [outbound, { tag: 'direct', protocol: 'freedom', settings: {} }, { tag: 'block', protocol: 'blackhole', settings: {} }] as [typeof outbound, { tag: string; protocol: string; settings: Record<string, unknown> }, { tag: string; protocol: string; settings: Record<string, unknown> }], routing: { domainStrategy: 'IPIfNonMatch', rules } };
 }
