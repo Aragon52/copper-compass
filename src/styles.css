@@ -125,6 +125,14 @@ h1 { font-weight: 800; font-size: 29px; color: var(--engrave-copper); text-shado
 .gauge-value { filter: drop-shadow(0 1px 1px var(--deep-ink)); }
 .telemetry-strip { background: var(--tray-gradient); box-shadow: inset 0 1px 2px var(--bevel), 0 1px 0 var(--plate-light); }
 .telemetry-strip strong { color: var(--engrave-ink); }
+/* Mechanical odometer — rolling digit drums like an old taxi meter. */
+.odometer { display: inline-flex; align-items: center; }
+.odo-window { display: inline-flex; align-items: center; gap: 1px; background: linear-gradient(180deg, var(--deep-ink), color-mix(in oklch, var(--shadow) 78%, black)); border: 1px solid var(--bevel); border-radius: 3px; padding: 3px 5px; box-shadow: inset 0 3px 7px var(--deep-ink), inset 0 -1px 0 color-mix(in oklch, var(--plate-light) 18%, transparent), 0 1px 0 var(--plate-light); font-family: var(--font-mono); font-size: 18px; line-height: 1; }
+.odo-drum { display: block; height: 1em; width: 0.64em; overflow: hidden; text-align: center; border-radius: 2px; background: linear-gradient(180deg, color-mix(in oklch, black 55%, var(--shadow)) 0%, color-mix(in oklch, var(--engrave-ink) 22%, black) 48%, color-mix(in oklch, black 55%, var(--shadow)) 100%); box-shadow: inset 0 0 0 0.5px color-mix(in oklch, var(--bevel) 45%, transparent); }
+.odo-col { display: block; will-change: transform; transition: transform .55s cubic-bezier(.24, .9, .32, 1.05); }
+.odo-col span { display: block; height: 1em; line-height: 1em; color: var(--copper-highlight); text-shadow: 0 -1px 1px var(--deep-ink); }
+.odo-accent .odo-col span { color: var(--primary); }
+.odo-sep { display: block; width: 0.28em; text-align: center; height: 1em; line-height: 1em; color: color-mix(in oklch, var(--copper-highlight) 60%, transparent); }
 .simulation-tag { color: var(--engrave-ink); border-color: var(--bevel); }
 .status-badge, .command-line { text-shadow: 0 1px 1px var(--deep-ink); }
 .node-choice { background: var(--tray-gradient); box-shadow: var(--tray-shadow); }
