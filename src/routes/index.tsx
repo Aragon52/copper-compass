@@ -12,7 +12,9 @@ import { Odometer } from '@/components/client/Odometer';
 import { defaultSettings, parseUri, type ServerNode } from '@/lib/v2ray';
 import { recommendServer } from '@/lib/recommend.functions';
 import steelTexture from '@/assets/brushed-steel.jpg';
-import netconLogo from '@/assets/netcon-logo.png';
+import netconLogo from '@/assets/netcon-logo-final-v2.png';
+import { WelcomeScreens } from '@/components/client/WelcomeScreens';
+import { welcomeStorageKey } from '@/lib/welcome';
 
 export const Route = createFileRoute('/')({
   head: () => ({ meta: [{ title: 'Netcon — Precision Connection Control' }, { name: 'description', content: 'Netcon: browse untrusted public V2Ray servers, save personal ratings, import configurations locally, and preview simulated steel-and-copper connection instruments.' }, { property: 'og:title', content: 'Netcon — Precision Connection Control' }, { property: 'og:description', content: 'Netcon. Local configuration, intelligent recommendations, and precision connection control.' }, { property: 'og:type', content: 'website' }, { name: 'twitter:card', content: 'summary_large_image' }] }),
@@ -20,6 +22,9 @@ export const Route = createFileRoute('/')({
 });
 const quickActions = [{ label: 'PUBG Mobile', icon: Gamepad2 }, { label: 'Facebook & IG', icon: Globe2 }, { label: 'YouTube 4K', icon: Play }, { label: 'Low Latency Gaming', icon: Crosshair }, { label: 'Anti-Censorship', icon: Shield }];
 function Index() {
+  const [welcome, setWelcome] = useState(false);
+  useEffect(() => { try { setWelcome(localStorage.getItem(welcomeStorageKey) !== 'done'); } catch { setWelcome(true); } }, []);
+  function finishWelcome() { setWelcome(false); try { localStorage.setItem(welcomeStorageKey, 'done'); } catch { /* Storage may be disabled. */ } }
   const [tab, setTab] = useState<'connection' | 'settings' | 'info'>('connection');
   const [nodes, setNodes] = useState<ServerNode[]>([]); const [node, setNode] = useState<ServerNode | null>(null);
   const [settings, setSettings] = useState(defaultSettings); const [manager, setManager] = useState(false); const [subscription, setSubscription] = useState(false);
@@ -58,9 +63,10 @@ function Index() {
         <Button variant="ghost" className="steel-tray active-server" onClick={() => setManager(true)}><span className="server-flag"><Flag country={node?.country || 'Unknown'} /></span><span className="active-server-name"><strong>{node?.name || 'No Node Selected'}</strong><small>{node ? `${node.country} · ${node.source ? 'UNTRUSTED PUBLIC' : 'Imported configuration'}` : 'Public server directory'}</small></span>{node && <span className="server-metrics"><span className="protocol-badge">{node.protocol === 'shadowsocks' ? 'SS' : node.protocol.toUpperCase()}</span><span className="server-ping">Unmeasured</span></span>}<ChevronRight size={18} className="text-muted-foreground" /></Button>
         <section className="control-deck"><div className="deck-heading"><span className="micro-label">LIVE CONNECTION INSTRUMENTS</span><span className="micro-label"><span className={`tiny-light ${connected ? 'live' : ''}`} />{connected ? 'SIMULATED TELEMETRY' : 'STANDBY'}</span></div><div className="instrument-grid"><Gauge label="LATENCY PING" value={telemetry.ping} unit="ms" max={180} active={connected} /><div className="power-control"><div className={`power-housing ${status}`}><Button variant="ghost" className="power-button" aria-label={status === 'offline' ? 'Connect VPN simulation' : status === 'connecting' ? 'Cancel connection' : 'Disconnect VPN simulation'} onClick={power}><Power className="power-bolt" /><span className="power-button-dot" /></Button></div><div className={`power-state ${status}`}>{status === 'offline' ? 'TAP TO CONNECT' : status === 'connecting' ? 'SECURE HANDSHAKE' : 'TAP TO DISCONNECT'}</div><div className="connection-duration">{duration}</div></div><Gauge label="SPEED RATE" value={telemetry.speed} unit="Mbps" max={120} active={connected} /></div><div className="connection-state-line"><span className={`status-led ${connected ? 'online-led' : ''}`} /><span>{connected ? 'Simulated tunnel connected' : status === 'connecting' ? 'Simulating handshake…' : 'Your tunnel is disconnected'}</span><span className="simulation-tag">SIMULATION</span></div></section>
         <section className="telemetry-strip"><div><span><ArrowDown size={13} />DOWNLOAD</span><strong>{telemetry.down.toFixed(1)}<small>Mbps</small></strong></div><div><span><ArrowUp size={13} />UPLOAD</span><strong>{telemetry.up.toFixed(1)}<small>Mbps</small></strong></div><div><span>DATA RECEIVED</span><strong><Odometer value={telemetry.received} label="Data received" /><small>MB</small></strong></div><div><span>DATA SENT</span><strong><Odometer value={telemetry.sent} label="Data sent" /><small>MB</small></strong></div></section><div className="connection-footer"><span><ShieldCheck size={13} />ZERO LOGS. ZERO COMPROMISE.</span><span><LockKeyhole size={12} />LOCAL CONFIG ENGINE</span></div>
-      </div> : tab === 'settings' ? <SettingsPanel settings={settings} onChange={s => { setSettings(s); if (node && !s.protocols.includes(node.protocol)) setStatus('offline'); }} node={node} /> : <InfoPanel node={node} connected={connected} subscription={subscription} />}
+      </div> : tab === 'settings' ? <SettingsPanel settings={settings} onChange={s => { setSettings(s); if (node && !s.protocols.includes(node.protocol)) setStatus('offline'); }} node={node} /> : <InfoPanel node={node} connected={connected} subscription={subscription} onWelcome={() => setWelcome(true)} />}
       <footer className="chassis-footer"><span>NETCON <span className="footer-divider">/</span> ENGINEERED FOR PRIVACY</span><span>XRAY CORE <span className="mini-led" /> WEB EDITION</span></footer>
     </div><div className="below-chassis"><span>BRUSHED STEEL <b>×</b> BURNISHED COPPER</span><span>EST. 2024 <span>·</span> BUILD 2.4.1</span></div>
     <ServerManager open={manager} onOpenChange={setManager} nodes={nodes.filter(n => settings.protocols.includes(n.protocol))} selected={node?.id || ''} protocols={settings.protocols} onSelect={selectNode} onAdd={addNodes} onDelete={id => { setNodes(old => old.filter(n => n.id !== id)); if (node?.id === id) { setNode(null); setStatus('offline'); } }} />
+    <WelcomeScreens key={welcome ? 'open' : 'closed'} open={welcome} onFinish={finishWelcome} />
   </main>;
 }

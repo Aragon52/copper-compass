@@ -17,3 +17,4 @@
 - Keep public-directory ingestion and personal rating persistence in a browser-safe module separate from UI; direct source fetches avoid relaying configuration credentials through our server.
 - Keep the external Android VPN adapter as a typed contract only until an actual service is supplied; fail unavailable rather than treating simulated protection as native enforcement.
 - Import the client logo from a shared bundled raster asset and derive the public favicon from its emblem; this keeps the header and browser identity consistent without altering VPN logic.
+- Keep welcome artwork and copy in a shared browser-safe slide module; open the skippable first-visit dialog after hydration and allow replay from Info without resetting client state.
