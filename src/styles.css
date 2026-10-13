@@ -312,3 +312,31 @@ h1 { font-weight: 800; font-size: 29px; color: var(--engrave-copper); text-shado
 .rating-on svg { fill: var(--primary); }
 .active-server-name strong, .active-server-name small { overflow-wrap: anywhere; }
 @media (max-width: 450px) { .directory-controls { grid-template-columns: 1fr; } }
+
+/* Unframed portrait welcome artwork with shared metallic controls. */
+:root { --welcome-shade: linear-gradient(180deg, color-mix(in oklch, var(--deep-ink) 45%, transparent), transparent 22%, transparent 44%, color-mix(in oklch, var(--deep-ink) 92%, transparent) 67%, var(--deep-ink)); }
+.welcome-screen { width: min(100vw, 480px); height: min(100dvh, 860px); max-width: 480px; padding: 0; gap: 0; overflow: hidden; border: 1px solid var(--bevel); border-radius: 7px; background: var(--deep-ink); display: flex; flex-direction: column; }
+.welcome-screen > button:last-child { display: none; }
+.welcome-art, .welcome-shade { position: absolute; inset: 0; width: 100%; height: 100%; }
+.welcome-art { object-fit: cover; }
+.welcome-shade { background: var(--welcome-shade); pointer-events: none; }
+.welcome-header { position: relative; display: flex; align-items: center; justify-content: space-between; padding: 24px 28px 0; gap: 20px; }
+.welcome-header img { width: 165px; height: auto; }
+.welcome-skip, .welcome-back { color: var(--dial-label); }
+.welcome-skip:hover, .welcome-back:hover { background: var(--steel); color: var(--engrave-light); }
+.welcome-copy { position: relative; margin-top: auto; padding: 0 28px; }
+.welcome-label { color: var(--copper-highlight); font: 10px var(--font-mono); }
+.welcome-title { white-space: pre-line; font-family: var(--font-display); font-size: 32px; line-height: 1.14; letter-spacing: 0; font-weight: 700; color: var(--engrave-light); margin: 14px 0 12px; }
+.welcome-description { color: var(--dial-label); font-size: 13px; line-height: 1.6; margin: 0; max-width: 370px; }
+.welcome-footer { position: relative; padding: 15px 28px 22px; }
+.welcome-navigation { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.welcome-dots { display: flex; gap: 0; }
+.welcome-dot { width: 30px; height: 36px; }
+.welcome-dot span { width: 6px; height: 6px; border-radius: 50%; background: var(--bevel); }
+.welcome-dot.selected span { width: 18px; border-radius: 3px; background: var(--primary); }
+.welcome-dot:hover { background: var(--steel); }
+.welcome-count { font: 10px var(--font-mono); color: var(--dial-label); }
+.welcome-next { width: 100%; height: 47px; background: var(--copper-gradient); color: var(--primary-foreground); box-shadow: inset 0 1px 0 var(--copper-highlight), inset 0 -2px 0 var(--copper-bevel); border-color: var(--copper-bevel); text-shadow: none; justify-content: space-between; padding-inline: 20px; }
+.welcome-edition { display: block; margin-top: 15px; text-align: center; font: 8px var(--font-mono); color: var(--dial-label); }
+@media (max-width: 500px) { .welcome-screen { border: 0; border-radius: 0; } }
+@media (max-height: 650px) { .welcome-title { font-size: 27px; margin-block: 8px; }.welcome-description { font-size: 12px; }.welcome-header { padding-top: 12px; }.welcome-footer { padding-top: 8px; padding-bottom: 12px; }.welcome-navigation { margin-bottom: 5px; }.welcome-edition { margin-top: 8px; } }

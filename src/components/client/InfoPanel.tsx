@@ -1,4 +1,4 @@
-import { Activity, ShieldCheck, Smartphone, Check, Terminal, Copy } from 'lucide-react';
+import { Activity, ShieldCheck, Smartphone, Check, Terminal, Copy, Info as InfoIcon } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { type ServerNode } from '@/lib/v2ray';
