@@ -1,5 +1,5 @@
 import { useLanguage } from '@/components/client/LanguageProvider';
-import { ShieldCheck, Network, Palette, Download, Copy, LockKeyhole } from 'lucide-react';
+import { ShieldCheck, Network, Download, Copy, LockKeyhole } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
@@ -18,7 +18,7 @@ export function SettingsPanel({ settings, onChange, node }: { settings: ClientSe
     <div className="setting-row protocol-settings"><div><strong>{t("Enabled protocols")}</strong><small>{t("Available for server selection")}</small></div><div className="protocol-switch-bank">{(['vless', 'vmess', 'trojan', 'shadowsocks'] as Protocol[]).map(p => <label className="protocol-switch-unit" key={p}><span>{p === 'shadowsocks' ? 'SS' : p.toUpperCase()}</span><Switch className="analog-toggle" aria-label={`${p === 'shadowsocks' ? 'Shadowsocks' : p.toUpperCase()} protocol`} checked={settings.protocols.includes(p)} onCheckedChange={enabled => onChange({ ...settings, protocols: enabled ? [...settings.protocols, p] : settings.protocols.filter(v => v !== p) })} /><span className={`switch-readout ${settings.protocols.includes(p) ? 'is-on' : ''}`}>{settings.protocols.includes(p) ? t('ON') : t('OFF')}</span></label>)}</div></div>
     <div className="setting-row"><div><strong>{t("Routing rules")}</strong><small>{t("Traffic distribution policy")}</small></div><select aria-label={t("Routing rules")} className="engraved-input setting-select" value={settings.routing} onChange={e => onChange({ ...settings, routing: e.target.value })}>{['Global', 'Bypass LAN', 'Bypass Mainland/Domestic', 'Rule-based'].map(v => <option key={v} value={v}>{t(v)}</option>)}</select></div>
     <div className="proxy-ports"><span><LockKeyhole size={14} />{t("LOCAL PROXY")}</span><span>SOCKS5 <b>10808</b></span><span>HTTP <b>10809</b></span></div><p className="settings-note">{t("Web simulation only. Kill switch and DNS protection require a native VPN service; JSON exports include DNS and routing preferences.")}</p>
-  </section><div className="section-heading"><span><Palette size={15} />{t("APPEARANCE")}</span></div><section className="steel-tray appearance"><div><strong>{t("Brushed Steel & Burnished Copper")}</strong><small>{t("PRECISION INSTRUMENT / DARK")}</small></div><div className="swatches"><span className="swatch swatch-steel" title="Steel base · #2C3035" /><span className="swatch swatch-highlight" title="Steel bevel · #5A626C" /><span className="swatch swatch-copper" title="Copper · #C87547" /><span className="swatch swatch-glow" title="Copper highlight · #E8C99A" /></div></section>
+  </section>
     <div className="export-section"><Button className="copper-button" disabled={!node} onClick={download}><Download />{t("EXPORT XRAY JSON")}</Button><Button variant="outline" className="keycap" disabled={!node} onClick={copy}><Copy />{t("COPY CONFIGURATION")}</Button></div>{message && <p role="status" className="text-primary text-sm">{t(message)}</p>}
   </div>;
 }
