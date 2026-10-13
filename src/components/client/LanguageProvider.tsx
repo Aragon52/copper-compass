@@ -5,7 +5,7 @@ const LanguageContext = createContext<{ language: Language; setLanguage: (langua
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguage] = useState<Language>('en');
   useEffect(() => { try { if (localStorage.getItem(languageStorageKey) === 'my') setLanguage('my'); } catch { /* Keep English when storage is unavailable. */ } }, []);
-  useEffect(() => { document.documentElement.lang = language; }, [language]);
+  useEffect(() => { document.documentElement.lang = language; document.body.classList.toggle('language-my', language === 'my'); }, [language]);
   function changeLanguage(value: Language) { setLanguage(value); try { localStorage.setItem(languageStorageKey, value); } catch { /* The choice remains active for this session. */ } }
   return <LanguageContext.Provider value={{ language, setLanguage: changeLanguage, t: text => translate(language, text) }}><div className={`localized-client language-${language}`} lang={language}>{children}</div></LanguageContext.Provider>;
 }
