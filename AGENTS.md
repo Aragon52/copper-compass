@@ -19,3 +19,4 @@
 - Import the client logo from a shared bundled raster asset and derive the public favicon from its emblem; this keeps the header and browser identity consistent without altering VPN logic.
 - Derive platform icons from the same Netcon emblem, keeping adaptive foregrounds mask-safe and store icons opaque; shared artwork prevents inconsistent brand marks across installations.
 - Keep welcome artwork and copy in a shared browser-safe slide module; open the skippable first-visit dialog after hydration and allow replay from Info without resetting client state.
+- Keep translations in a browser-safe dictionary and a shared language context; persist the choice after hydration and translate presentation labels without changing protocol values, server credentials, or brand names.
