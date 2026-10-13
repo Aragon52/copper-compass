@@ -1,4 +1,7 @@
 # Netcon
+- [ ] Clean logo transparency and matching favicon
+- [ ] Create five cohesive illustrated welcome screens, navigation and replay
+- [ ] Export five portrait welcome artworks for future Play Store use and verify all screens
 - [x] Rename the client Netcon and generate, inspect, and apply a professional luxury communication logo with matching favicon; verified phone/desktop layouts and all 16 tests
 - [x] Instrument design and connection simulation
 - [x] Local URI parser, server imports, QR and configuration export
