@@ -71,3 +71,7 @@ cd <repository-name>
 npm i
 npm run dev
 ```
+
+## Android
+
+Android packaging and tagged GitHub releases are documented in [docs/android-release.md](docs/android-release.md). The Android shell preserves the deployed web UI; it does not provide a native VPN service.

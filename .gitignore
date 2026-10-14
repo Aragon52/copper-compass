@@ -11,6 +11,13 @@ node_modules
 dist
 dist-ssr
 .output
+.gradle
+android/.gradle
+android/app/libs/*.aar
+android/local.properties
+android/app/release.keystore
+*.jks
+*.keystore
 .vinxi
 .tanstack/**
 .nitro
