@@ -13,6 +13,7 @@ import { useEffect, type ReactNode } from "react";
 import { LanguageProvider } from '@/components/client/LanguageProvider';
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { registerServiceWorker } from "@/lib/pwa-register";
 
 function NotFoundComponent() {
   return (
@@ -79,6 +80,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "theme-color", content: "#2C3035" },
       { title: "Netcon" },
       { name: "description", content: "Netcon — precision VPN configuration and simulated connection control." },
       { property: "og:title", content: "Netcon" },
@@ -119,6 +121,10 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+
+  useEffect(() => {
+    registerServiceWorker();
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
