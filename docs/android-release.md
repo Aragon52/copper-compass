@@ -2,6 +2,8 @@
 
 The Android app keeps the Netcon web interface and registers a native Capacitor plugin for Android `VpnService` and the bundled Xray core. It loads the deployed HTTPS app configured for the release, so the web UI and its server-backed features stay consistent with the website. An internet connection is required. Browser-only use does not create a VPN connection. The Android VPN controls work only when the web page matches the configured app origin. Review [native-vpn-integration.md](native-vpn-integration.md) for protection limitations and the required real-device acceptance tests.
 
+Publish the updated web app to `ANDROID_APP_URL` before testing a new APK; the release packages the native Android service but loads its interface from that live URL rather than bundling the current web UI.
+
 ## Local Android project
 
 Requirements: Node.js 22+, Java 21, Android Studio, and Android SDK platform/build tools.
