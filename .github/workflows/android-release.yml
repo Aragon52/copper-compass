@@ -30,6 +30,8 @@ jobs:
         run: npm ci
       - name: Build web app
         run: npm run build
+      - name: Prepare Android core
+        run: npm run android:prepare
       - name: Sync Android project
         run: npx cap sync android
         env:
