@@ -2,7 +2,7 @@
   "meta": {
     "name": "Netcon",
     "package": "@ws-f849229effde83fbe1c1/0b12b832-408c-41d2-b1c3-a5260c1d457b",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "framework": "react",
     "css_framework": "tailwind",
     "starter_template": "custom_design_system_tailwind",
@@ -13,8 +13,10 @@
     "source_manifest": {
       "#enrichment": "bbb6813bcaec54a93aa26a400b53d952a81d1a687ecd5b78e16a68e27b9b736e",
       ".gitignore": "6d9e901a692b46a83707c245fb03bc91",
+      ".lovable/meta.yaml": "954a981e8847ec1692669dbb04ae9ae9",
       ".lovable/plan/real-vpn-and-public-server-directory-2026-10-13.md": "123f29ccbd29f79fe14d8496dba53f9b",
       ".lovable/project.json": "8a614b0de0ec719c6a3c839b39ebb7b9",
+      ".lovable/sources.yaml": "f39f708c65f19e1a4add806fe3098f6d",
       ".prettierignore": "7279a476f196a2da5f7edd18db568dc6",
       ".prettierrc": "185ef0234746ab738ac1ab6cec5e2bd9",
       "AGENTS.md": "bda18a8609ebd979035494755c2e8037",
@@ -108,6 +110,7 @@
       "src/components/ui/toggle.tsx": "ee8c5adac74e7242b85b544db1a8fbad",
       "src/components/ui/tooltip.tsx": "67d71db5a1ab935695d1def497f5b8a6",
       "src/hooks/use-mobile.tsx": "c0a0bdd4638c391a1dd06ac82074e60b",
+      "src/index.ts": "37d62745f3d2331053b2f1783ba1938a",
       "src/integrations/supabase/auth-attacher.ts": "dad043cda134d909e52de0346c16625e",
       "src/integrations/supabase/auth-middleware.ts": "eabaf8c8ba32205717921ce5f255185e",
       "src/integrations/supabase/client.server.ts": "23f838ab7633e0a97e695f3c500d91aa",
