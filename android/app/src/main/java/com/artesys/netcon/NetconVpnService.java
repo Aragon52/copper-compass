@@ -13,6 +13,8 @@ import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.VpnService;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.ParcelFileDescriptor;
 import android.os.SystemClock;
 
@@ -52,16 +54,39 @@ public final class NetconVpnService extends VpnService {
     private static volatile double downloadBytesPerSecond;
     private static volatile double uploadBytesPerSecond;
     private static volatile long previousSampleAt;
+    private static volatile long previousCoreReceivedBytes;
+    private static volatile long previousCoreSentBytes;
     private static CoreController coreController;
 
     private final ExecutorService worker = Executors.newSingleThreadExecutor();
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
     private ParcelFileDescriptor vpnInterface;
+    private final Runnable healthCheck = new Runnable() {
+        @Override
+        public void run() {
+            boolean failed = false;
+            synchronized (LOCK) {
+                if ("connected".equals(state) && (coreController == null || !coreController.getIsRunning())) {
+                    setState("error", "Xray stopped unexpectedly. Traffic remains blocked until you disconnect.");
+                    failed = true;
+                }
+            }
+            if (failed) {
+                updateNotification("VPN blocked: Xray stopped");
+            }
+            if (!isFinishing()) {
+                mainHandler.postDelayed(this, 1000);
+            }
+        }
+    };
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null && ACTION_DISCONNECT.equals(intent.getAction())) {
+            mainHandler.removeCallbacks(healthCheck);
             worker.execute(() -> {
                 stopTunnel();
+                setState("disconnected", "");
                 stopForeground(STOP_FOREGROUND_REMOVE);
                 stopSelf(startId);
             });
@@ -76,15 +101,27 @@ public final class NetconVpnService extends VpnService {
         }
 
         setState("connecting", "");
-        startForegroundCompat();
-        worker.execute(() -> startTunnel(config));
+        try {
+            startForegroundCompat();
+        } catch (RuntimeException error) {
+            setState("error", safeMessage(error));
+            stopSelf(startId);
+            return START_NOT_STICKY;
+        }
+        worker.execute(() -> {
+            stopTunnel();
+            setState("connecting", "");
+            startTunnel(config);
+        });
         return START_NOT_STICKY;
     }
 
     @Override
     public void onRevoke() {
+        mainHandler.removeCallbacks(healthCheck);
         worker.execute(() -> {
             stopTunnel();
+            setState("disconnected", "");
             stopForeground(STOP_FOREGROUND_REMOVE);
             stopSelf();
         });
@@ -93,6 +130,7 @@ public final class NetconVpnService extends VpnService {
 
     @Override
     public void onDestroy() {
+        mainHandler.removeCallbacks(healthCheck);
         worker.shutdown();
         stopTunnel();
         super.onDestroy();
@@ -167,15 +205,31 @@ public final class NetconVpnService extends VpnService {
                 downloadBytesPerSecond = 0;
                 uploadBytesPerSecond = 0;
                 previousSampleAt = startedAt;
+                previousCoreReceivedBytes = 0;
+                previousCoreSentBytes = 0;
                 state = "connected";
                 errorMessage = "";
             }
             updateNotification("VPN active");
+            mainHandler.removeCallbacks(healthCheck);
+            mainHandler.postDelayed(healthCheck, 1000);
         } catch (Exception error) {
-            stopTunnel();
-            setState("error", safeMessage(error));
-            stopForeground(STOP_FOREGROUND_REMOVE);
-            stopSelf();
+            if (coreController != null) {
+                try {
+                    coreController.stopLoop();
+                } catch (Exception stopError) {
+                    android.util.Log.e("NetconVpnService", "Unable to stop Xray after startup failure.", stopError);
+                }
+                coreController = null;
+            }
+            String message = safeMessage(error);
+            setState("error", message);
+            if (vpnInterface != null) {
+                updateNotification("VPN blocked: " + message);
+            } else {
+                stopForeground(STOP_FOREGROUND_REMOVE);
+                stopSelf();
+            }
         }
     }
 
@@ -229,6 +283,8 @@ public final class NetconVpnService extends VpnService {
             downloadBytesPerSecond = 0;
             uploadBytesPerSecond = 0;
             previousSampleAt = 0;
+            previousCoreReceivedBytes = 0;
+            previousCoreSentBytes = 0;
         }
     }
 
@@ -243,6 +299,8 @@ public final class NetconVpnService extends VpnService {
             downloadBytesPerSecond = 0;
             uploadBytesPerSecond = 0;
             previousSampleAt = 0;
+            previousCoreReceivedBytes = 0;
+            previousCoreSentBytes = 0;
         }
     }
 
@@ -284,10 +342,16 @@ public final class NetconVpnService extends VpnService {
         }
         long now = SystemClock.elapsedRealtime();
         long interval = Math.max(1, now - previousSampleAt);
-        downloadBytesPerSecond = downloaded * 1000d / interval;
-        uploadBytesPerSecond = uploaded * 1000d / interval;
-        receivedBytes += downloaded;
-        sentBytes += uploaded;
+        long receivedDelta = downloaded >= previousCoreReceivedBytes
+            ? downloaded - previousCoreReceivedBytes : downloaded;
+        long sentDelta = uploaded >= previousCoreSentBytes
+            ? uploaded - previousCoreSentBytes : uploaded;
+        downloadBytesPerSecond = receivedDelta * 1000d / interval;
+        uploadBytesPerSecond = sentDelta * 1000d / interval;
+        receivedBytes += receivedDelta;
+        sentBytes += sentDelta;
+        previousCoreReceivedBytes = downloaded;
+        previousCoreSentBytes = uploaded;
         previousSampleAt = now;
     }
 
@@ -308,6 +372,12 @@ public final class NetconVpnService extends VpnService {
     private void updateNotification(String text) {
         NotificationManager manager = getSystemService(NotificationManager.class);
         manager.notify(NOTIFICATION_ID, buildNotification(text));
+    }
+
+    private boolean isFinishing() {
+        synchronized (LOCK) {
+            return !"connected".equals(state) && !"error".equals(state);
+        }
     }
 
     private Notification buildNotification(String text) {

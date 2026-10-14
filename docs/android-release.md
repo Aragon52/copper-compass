@@ -1,6 +1,6 @@
 # Android app and GitHub releases
 
-The Android app is a Capacitor shell around the existing Netcon web interface. It loads the deployed HTTPS app configured for the release, so the web UI and its server-backed features stay consistent with the website. An internet connection is required. The shell does not add a native VPN service; connection protection remains explicitly simulated until the service described in [native-vpn-integration.md](native-vpn-integration.md) exists.
+The Android app keeps the Netcon web interface and registers a native Capacitor plugin for Android `VpnService` and the bundled Xray core. It loads the deployed HTTPS app configured for the release, so the web UI and its server-backed features stay consistent with the website. An internet connection is required. Browser-only use does not create a VPN connection. The Android VPN controls work only when the web page matches the configured app origin. Review [native-vpn-integration.md](native-vpn-integration.md) for protection limitations and the required real-device acceptance tests.
 
 ## Local Android project
 

@@ -74,4 +74,4 @@ npm run dev
 
 ## Android
 
-Android packaging and tagged GitHub releases are documented in [docs/android-release.md](docs/android-release.md). The Android shell preserves the deployed web UI; it does not provide a native VPN service.
+The Android app keeps the Netcon interface and uses a registered native Capacitor plugin to control Android `VpnService` with the bundled Xray core. Browser-only use does not create a VPN connection. Android packaging and tagged GitHub releases are documented in [docs/android-release.md](docs/android-release.md); device-level VPN validation steps and limitations are documented in [docs/native-vpn-integration.md](docs/native-vpn-integration.md).
