@@ -28,10 +28,10 @@ describe('Public directory', () => {
 });
 describe('Native boundary', () => {
   it('fails unavailable without simulation fallback', async () => { await expect(unavailableNativeVpn.connect()).rejects.toThrow('No device traffic'); await expect(unavailableNativeVpn.probe()).rejects.toThrow('requires'); });
-  it('passes DNS and routing with a separate native Kill Switch request', () => {
+  it('passes DNS and routing to the native VPN configuration', () => {
     const node = parseDirectory(uri).nodes[0]; if (!node) throw new Error('Missing fixture');
     const request = nativeConnectRequest(node, { ...defaultSettings, dns: '9.9.9.9', routing: 'Bypass Mainland/Domestic' });
-    expect(request.killSwitch).toBe(true); expect(request.config.dns.servers).toEqual(['9.9.9.9']);
+    expect(request.config.dns.servers).toEqual(['9.9.9.9']);
     expect(request.config.routing.rules).toContainEqual({ type: 'field', ip: ['geoip:cn'], outboundTag: 'direct' });
   });
   it('rejects stale sessions, disconnected updates and invalid counters', () => {
@@ -40,5 +40,6 @@ describe('Native boundary', () => {
     expect(acceptNativeTraffic(event, 'old', true)).toBe(false);
     expect(acceptNativeTraffic(event, 'new', false)).toBe(false);
     expect(acceptNativeTraffic({ ...event, receivedBytes: -1 }, 'new', true)).toBe(false);
+    expect(acceptNativeTraffic({ ...event, sessionId: '' }, '', true)).toBe(false);
   });
 });

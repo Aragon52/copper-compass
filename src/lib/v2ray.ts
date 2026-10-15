@@ -1,7 +1,7 @@
 export type Protocol = 'vless' | 'vmess' | 'trojan' | 'shadowsocks';
 export type ServerNode = { id: string; name: string; protocol: Protocol; address: string; port: number; credential: string; ping: number; country: string; flag: string; network: string; security: string; params: Record<string, string>; demo?: boolean; source?: string };
-export type ClientSettings = { killSwitch: boolean; dns: string; customDns: string; routing: string; protocols: Protocol[] };
-export const defaultSettings: ClientSettings = { killSwitch: true, dns: '1.1.1.1', customDns: '', routing: 'Bypass LAN', protocols: ['vless', 'vmess', 'trojan', 'shadowsocks'] };
+export type ClientSettings = { dns: string; customDns: string; routing: string; protocols: Protocol[] };
+export const defaultSettings: ClientSettings = { dns: '1.1.1.1', customDns: '', routing: 'Bypass LAN', protocols: ['vless', 'vmess', 'trojan', 'shadowsocks'] };
 export const presetNodes: [ServerNode, ...ServerNode[]] = [
   { id: 'sg-01', name: 'Singapore · SG-01', protocol: 'vless', address: 'sg.example.com', port: 443, credential: 'a1b2c3d4-1111-4111-8111-123456789abc', ping: 24, country: 'Singapore', flag: '🇸🇬', network: 'tcp', security: 'tls', params: { sni: 'sg.example.com' }, demo: true },
   { id: 'jp-02', name: 'Tokyo · JP-02', protocol: 'vmess', address: 'jp.example.com', port: 443, credential: 'a1b2c3d4-2222-4222-8222-123456789abc', ping: 46, country: 'Japan', flag: '🇯🇵', network: 'ws', security: 'tls', params: { path: '/connect', sni: 'jp.example.com' }, demo: true },
