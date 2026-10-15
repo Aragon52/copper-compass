@@ -1,18 +1,18 @@
 # Android app and GitHub releases
 
-The Android app bundles the Netcon interface and registers a native Capacitor plugin for Android `VpnService` and the Xray core. Its VPN controls run from Capacitor's local app origin; they do not depend on the separately deployed Lovable website. The public directory requires internet access. Gemini recommendations that use server functions are not available in the bundled Android shell. Browser-only use does not create a VPN connection. Review [native-vpn-integration.md](native-vpn-integration.md) for protection limitations and the required real-device acceptance tests.
+The Android app uses a native Android screen and Android `VpnService` with the bundled Xray core. It does not load or package the web interface. The first native screen accepts one VLESS, VMess, Trojan, or Shadowsocks link at a time, as well as Xray JSON; parsing happens on-device. Imported configuration is stored in private app preferences with Android backup disabled. The app also accepts shared text and direct configuration links. Public-server browsing, QR scanning, and Gemini recommendations remain web-only.
 
 ## Local Android project
 
-Requirements: Node.js 22+, Java 21, Android Studio, and Android SDK platform/build tools.
+Requirements: Java 21, Android Studio, and Android SDK platform/build tools.
 
 ```sh
-npm ci
-npm run android:sync
-npm run android:open
+bash scripts/fetch-android-core.sh
+cd android
+./gradlew assembleDebug
 ```
 
-Run `npm run android:assets` after changing the shared icon to regenerate Android launcher and splash images. `npm run android:build` generates a client-side shell and copies its assets into the ignored `android-dist/` directory consumed by Capacitor.
+Install the debug APK from `android/app/build/outputs/apk/debug/app-debug.apk`. Run `./gradlew testDebugUnitTest` to run Android unit tests. No web build or Capacitor sync is part of Android packaging. To regenerate Android launcher assets after changing the shared icon, run `npm run android:assets`.
 
 ## Configure GitHub releases
 
@@ -30,11 +30,11 @@ keytool -genkeypair -v -keystore netcon-release.jks -keyalg RSA -keysize 4096 -v
 base64 -w 0 netcon-release.jks
 ```
 
-Store the encoded output as `ANDROID_KEYSTORE_BASE64` and never commit the keystore or passwords. Push a version tag such as `v1.0.0` to build, sign, verify, and attach `Netcon.apk` to a GitHub Release:
+Store the encoded output as `ANDROID_KEYSTORE_BASE64` and never commit the keystore or passwords. Push a new version tag such as `v1.0.4` to build, sign, verify, and attach `Netcon.apk` to a GitHub Release:
 
 ```sh
-git tag v1.0.0
-git push origin v1.0.0
+git tag v1.0.4
+git push origin v1.0.4
 ```
 
-The release build creates a local SPA shell for Capacitor, bundles the client UI into the APK, and syncs the Android project. The release APK is signed for direct installation. Its version name comes from the tag, and its version code increments with each workflow run. Google Play distribution may require a separately configured Android App Bundle and Play signing.
+The release APK is signed for direct installation. Its version name comes from the tag, and its version code increments with each workflow run. Google Play distribution may require a separately configured Android App Bundle and Play signing.

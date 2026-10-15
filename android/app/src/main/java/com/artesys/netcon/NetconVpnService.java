@@ -20,8 +20,6 @@ import android.os.SystemClock;
 
 import androidx.core.app.NotificationCompat;
 
-import com.getcapacitor.JSObject;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -94,7 +92,7 @@ public final class NetconVpnService extends VpnService {
         }
 
         String config = intent == null ? null : intent.getStringExtra(EXTRA_CONFIG);
-        if (config == null || config.isBlank()) {
+        if (config == null || config.trim().isEmpty()) {
             setState("error", "No saved VPN configuration is available.");
             stopSelf(startId);
             return START_NOT_STICKY;
@@ -142,7 +140,7 @@ public final class NetconVpnService extends VpnService {
             LinkProperties linkProperties = getSystemService(ConnectivityManager.class)
                 .getLinkProperties(underlyingNetwork);
             String interfaceName = linkProperties == null ? null : linkProperties.getInterfaceName();
-            if (interfaceName == null || interfaceName.isBlank()) {
+            if (interfaceName == null || interfaceName.trim().isEmpty()) {
                 throw new IllegalStateException("The active network interface is unavailable.");
             }
 
@@ -304,20 +302,32 @@ public final class NetconVpnService extends VpnService {
         }
     }
 
-    public static JSObject getStatus() {
+    public static Status getStatus() {
         synchronized (LOCK) {
             sampleTraffic();
-            JSObject result = new JSObject();
-            result.put("state", state);
-            result.put("error", errorMessage);
-            result.put("sessionId", sessionId);
-            result.put("elapsedSeconds", startedAt == 0 ? 0 : (SystemClock.elapsedRealtime() - startedAt) / 1000);
-            result.put("receivedBytes", receivedBytes);
-            result.put("sentBytes", sentBytes);
-            result.put("downloadBytesPerSecond", downloadBytesPerSecond);
-            result.put("uploadBytesPerSecond", uploadBytesPerSecond);
-            result.put("latencyMs", JSONObject.NULL);
-            return result;
+            return new Status(
+                state,
+                errorMessage,
+                startedAt == 0 ? 0 : (SystemClock.elapsedRealtime() - startedAt) / 1000,
+                receivedBytes,
+                sentBytes
+            );
+        }
+    }
+
+    public static final class Status {
+        public final String state;
+        public final String error;
+        public final long elapsedSeconds;
+        public final long receivedBytes;
+        public final long sentBytes;
+
+        private Status(String state, String error, long elapsedSeconds, long receivedBytes, long sentBytes) {
+            this.state = state;
+            this.error = error;
+            this.elapsedSeconds = elapsedSeconds;
+            this.receivedBytes = receivedBytes;
+            this.sentBytes = sentBytes;
         }
     }
 
@@ -395,7 +405,7 @@ public final class NetconVpnService extends VpnService {
 
     private static String safeMessage(Exception error) {
         String message = error.getMessage();
-        if (message == null || message.isBlank()) {
+        if (message == null || message.trim().isEmpty()) {
             return "The Android VPN tunnel failed to start.";
         }
         return message.length() > 180 ? message.substring(0, 180) : message;
