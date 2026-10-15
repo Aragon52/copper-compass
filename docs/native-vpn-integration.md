@@ -1,12 +1,12 @@
 # Android VPN integration
 
-The Android project now contains a Capacitor `NativeVpn` plugin, a foreground `VpnService`, and the Xray Android core. The app UI sends the selected Xray configuration to the plugin over Capacitor; the plugin accepts calls only from the configured app origin, requests Android VPN consent, establishes an IPv4/IPv6 TUN, and starts Xray with the TUN file descriptor. Browser-only use fails unavailable and does not simulate a connection. `src/lib/native-vpn.ts` is the typed client adapter.
+The Android app has a native Android screen, a foreground `VpnService`, and the Xray Android core. It imports VLESS, VMess, Trojan, and Shadowsocks links or Xray JSON locally, requests Android VPN consent, establishes an IPv4/IPv6 TUN, and starts Xray with the TUN file descriptor. The Android package has no WebView or bundled web assets; the website remains a separate browser app. The current native screen does not yet provide the website's public directory, QR scanning, ratings, settings dashboard, or Gemini recommendations.
 
 This implementation has **not yet passed physical-device acceptance testing**. A successful Gradle build or Xray startup check is not proof that internet traffic is routed correctly or that DNS/IP leaks are prevented. Do not describe it as verified until the acceptance tests below pass on supported Android versions and networks.
 
 The launcher presets are demonstration endpoints and cannot connect. Import a valid VLESS, VMess, Trojan, or Shadowsocks configuration. The native service currently accepts a literal DNS server IP; it does not support an HTTPS resolver URL. Latency is reported as unmeasured until a real device-side probe is implemented.
 
-Pass `nativeConnectRequest(node, settings)` only over the trusted Capacitor bridge. Do not expose configs through public HTTP endpoints, arbitrary browser globals, logs, analytics, or AI requests. Credentials remain on the device. Apply changed settings via explicit reconnect; the UI must display service-confirmed state rather than treating plugin acceptance as a connected tunnel.
+Configurations and credentials are saved only in the native app's private preferences, with Android backup disabled. Do not expose configs through public HTTP endpoints, logs, analytics, or AI requests. The UI polls service-confirmed state rather than treating a start request as a connected tunnel.
 
 ## Protection
 - Capture DNS through TUN and route resolver queries through the selected policy; plain resolver IPs do not imply encrypted DNS. Validate custom resolvers and DNS/IP/domain routing interaction.
