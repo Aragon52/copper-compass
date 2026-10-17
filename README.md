@@ -10,7 +10,7 @@ Build the "Ai V2Ray Client" web app reproducing the exact design system and feat
   - Iron / Accents: EngraveLight (#9AA1A8), OffLineBorder (#B89A5C), StatusLed (#E53935), OnlineLed (#4CAF50)
 - Metallic recessed trays (SteelTray) with vertical chamfers and inner shadows, engraved keycap buttons, and glowing copper indicators.
 
-2. Navigation & Layout (Mobile-first PWA / Capacitor layout with desktop centering):
+2. Navigation & Layout (Mobile-first PWA with desktop centering):
 - Top Header: Status LED indicator, "Ai V2Ray Client" title in burnished copper, status badge ("OFFLINE" in red or "CONNECTED" in glowing copper/green).
 - Recessed pill navigation bar with 3 tabs:
   - CONNECTION (Bolt icon)
@@ -46,7 +46,7 @@ Build the "Ai V2Ray Client" web app reproducing the exact design system and feat
 5. Information Tab:
 - Device & connection diagnostic information: App Version 2.4.1, protocols, simulated client IP & server exit IP, subscription status.
 - Zero-Log & Data Safety privacy card: No telemetry, no ad SDKs, local-only configuration parsing.
-- Guide on exporting to native Android using Capacitor (`npx cap add android`).
+- Information panel describing Android VPN requirements and protection limitations.
 
 6. Local Config Parser Engine:
 - Include the functional local parser that parses `vmess://` (base64 JSON), `vless://`, `trojan://`, and `ss://` URIs directly in TypeScript into valid Xray JSON configurations. Include preset test nodes so the UI is immediately interactive.

@@ -12,7 +12,7 @@ cd android
 ./gradlew assembleDebug
 ```
 
-Install the debug APK from `android/app/build/outputs/apk/debug/app-debug.apk`. Run `./gradlew testDebugUnitTest` to run Android unit tests. No web build or Capacitor sync is part of Android packaging. To regenerate Android launcher assets after changing the shared icon, run `npm run android:assets`.
+Install the debug APK from `android/app/build/outputs/apk/debug/app-debug.apk`. Instrumentation tests are in `app/src/androidTest`; run them with `./gradlew connectedDebugAndroidTest` on a connected device or emulator. No web build or Capacitor sync is part of Android packaging. To regenerate Android launcher assets after changing the shared icon, run `npm run android:assets`.
 
 ## Configure GitHub releases
 
@@ -30,11 +30,11 @@ keytool -genkeypair -v -keystore netcon-release.jks -keyalg RSA -keysize 4096 -v
 base64 -w 0 netcon-release.jks
 ```
 
-Store the encoded output as `ANDROID_KEYSTORE_BASE64` and never commit the keystore or passwords. Push a new version tag such as `v1.0.4` to build, sign, verify, and attach `Netcon.apk` to a GitHub Release:
+Store the encoded output as `ANDROID_KEYSTORE_BASE64` and never commit the keystore or passwords. Push a new version tag such as `v1.0.4` to build, sign, verify, and attach both `Netcon.apk` and `Netcon.aab` to a GitHub Release:
 
 ```sh
 git tag v1.0.4
 git push origin v1.0.4
 ```
 
-The release APK is signed for direct installation. Its version name comes from the tag, and its version code increments with each workflow run. Google Play distribution may require a separately configured Android App Bundle and Play signing.
+The release APK is signed for direct installation. The AAB is signed with the configured release key and can be uploaded to Google Play Console; complete Play App Signing enrollment and store listing there before publishing. Both artifacts use the tag as their version name, and their version code increments with each workflow run.
