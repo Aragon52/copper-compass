@@ -24,7 +24,13 @@ final class NativeXrayConfig {
             if (outbounds == null || outbounds.length() == 0) {
                 throw new IllegalArgumentException("Xray JSON must contain at least one outbound.");
             }
-            return new ImportedServer(config, "Imported Xray configuration");
+            JSONObject outbound = outbounds.getJSONObject(0);
+            JSONObject settings = outbound.optJSONObject("settings");
+            JSONArray servers = settings == null ? null : settings.optJSONArray("vnext");
+            if (servers == null && settings != null) servers = settings.optJSONArray("servers");
+            String address = servers == null || servers.length() == 0
+                ? "" : servers.optJSONObject(0) == null ? "" : servers.optJSONObject(0).optString("address", "");
+            return new ImportedServer(config, "Imported Xray configuration", outbound.optString("protocol", "Xray"), address);
         }
         String firstLink = "";
         int linkCount = 0;
@@ -79,7 +85,7 @@ final class NativeXrayConfig {
                     .put("port", port)
                     .put("users", new JSONArray().put(user)))))
             .put("streamSettings", stream);
-        return new ImportedServer(baseConfig(outbound), name);
+        return new ImportedServer(baseConfig(outbound), name, "vmess", address);
     }
 
     private static ImportedServer fromUrl(String link) throws Exception {
@@ -123,7 +129,7 @@ final class NativeXrayConfig {
             .put("protocol", protocol)
             .put("settings", server)
             .put("streamSettings", stream);
-        return new ImportedServer(baseConfig(outbound), name);
+        return new ImportedServer(baseConfig(outbound), name, protocol, address);
     }
 
     private static ImportedServer fromShadowsocks(String link) throws Exception {
@@ -167,7 +173,7 @@ final class NativeXrayConfig {
             .put("protocol", "shadowsocks")
             .put("settings", server)
             .put("streamSettings", new JSONObject().put("network", "tcp").put("security", "none"));
-        return new ImportedServer(baseConfig(outbound), name);
+        return new ImportedServer(baseConfig(outbound), name, "shadowsocks", address);
     }
 
     private static JSONObject streamSettings(String network, String security, String address, JSONObject params) throws Exception {
@@ -271,10 +277,14 @@ final class NativeXrayConfig {
     static final class ImportedServer {
         final JSONObject config;
         final String name;
+        final String protocol;
+        final String address;
 
-        ImportedServer(JSONObject config, String name) {
+        ImportedServer(JSONObject config, String name, String protocol, String address) {
             this.config = config;
             this.name = name;
+            this.protocol = protocol;
+            this.address = address;
         }
     }
 }
